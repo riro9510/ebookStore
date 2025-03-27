@@ -1,7 +1,7 @@
 {
   "name": "ebookstore",
   "version": "1.0.0",
-  "description": "Project by Steven Tomas, Dylan Winters,Brandon Christopher, Blessing Madhuma and Ricardo Ramos",
+  "description": "Project by Steven Thomas, Dylan Winters,Brandon Christopher, Blessing Madhuma and Ricardo Ramos",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -17,16 +17,25 @@
   },
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon server.js",
+    "lint": "eslint .",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/riro9510/ebookStore.git"
   },
-  "author": "Steven Tomas, Dylan Winters,Brandon Christopher, Blessing Madhuma and Ricardo Ramos",
+  "author": "Steven Thomas, Dylan Winters, Brandon Christopher, Blessing Madhuma and Ricardo Ramos",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/riro9510/ebookStore/issues"
   },
-  "homepage": "https://github.com/riro9510/ebookStore#readme"
+  "homepage": "https://github.com/riro9510/ebookStore#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "eslint": "^9.23.0",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-plugin-prettier": "^5.2.5",
+    "prettier": "^3.5.3"
+  }
 }

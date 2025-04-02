@@ -13,9 +13,18 @@ require('dotenv').config()
 const port = process.env.PORT || 3000
 const cors = require('cors')
 const database = require('./src/database/index.js')
+const passport = require('passport');
+const session = require('express-session');
+const GitHubStrategy = require('passport-github2').Strategy;
 
 app.use(cors())
 app.use(express.json())
+app.use(session({
+  secret:"secret",
+  resave: false,
+  saveUninitialized:true,
+}))
+app.use(passport.initialize()).use(passport.session());
 app.use(express.urlencoded({ extended: true }))
 
 app.use((req, res, next) => {
@@ -30,8 +39,24 @@ app.use((req, res, next) => {
   )
   next()
 })
+passport.use(new GitHubStrategy({
+  clientID:process.env.GITHUB_CLIENT_ID,
+  clientSecret:process.env.GITHUB_CLIENT_SECRET,
+  callbackURL:process.env.CALLBACK_URL
+},
+function(accessToken,refreshToken,profile,done){
+    return done(null,profile);
+  
+}
+));
 
-// Allow the use of the static folder
+passport.serializeUser((user,done)=>{
+  done(null,user);
+})
+passport.deserializeUser((user,done)=>{
+  done(null,user);
+})
+
 app.use(express.static('public'))
 app.use('/', require('./src/routes/index.js'))
 

@@ -1,5 +1,5 @@
 require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb')
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb')
 const uri = process.env.DATABASE_URI
 
 const client = new MongoClient(uri, {
@@ -13,7 +13,7 @@ const client = new MongoClient(uri, {
 /**
  * Ensure that the database connection is able to be established.
  */
-async function testDatabaseConnection () {
+async function testDatabaseConnection() {
   try {
     await client.connect()
     await client.db('admin').command({ ping: 1 })
@@ -47,4 +47,30 @@ async function insertMultipleItems(collection, data) {
   return insertedIds
 }
 
-module.exports = { testDatabaseConnection, insertMultipleItems }
+/**
+ * updates the mongodb object with data submitted
+ */
+async function updateItem(collection, id, data) {
+  try {
+    await client.connect()
+    const db = client.db('ebookstore').collection(collection)
+    // clean the data from all the empty values to avoid changing the database to null or empty strings
+    const cleanData = {}
+    for (const key in data) {
+      if (data[key] !== null && data[key] !== '') {
+        cleanData[key] = data[key]
+      }
+    }
+    const result = await db.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: cleanData }
+    )
+    return result
+  } catch (error) {
+    console.log('Error updating item:', error)
+  } finally {
+    await client.close()
+  }
+}
+
+module.exports = { testDatabaseConnection, insertMultipleItems, updateItem }

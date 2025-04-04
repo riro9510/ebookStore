@@ -57,12 +57,10 @@ passport.deserializeUser((user,done)=>{
   done(null,user);
 })*/
 
-
-// VIEW ENGINE / TEMPLATES 
-app.set("view engine", "ejs")
-app.use(expressLayouts)
-app.set("layout", "./layouts/layout") 
-
+// // VIEW ENGINE / TEMPLATES
+// app.set("view engine", "ejs")
+// app.use(expressLayouts)
+// app.set("layout", "./layouts/layout")
 
 // Allow the use of the static folder
 app.use(express.static('public'))

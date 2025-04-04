@@ -13,6 +13,7 @@ require('dotenv').config()
 const port = process.env.PORT || 3000
 const cors = require('cors')
 const database = require('./src/database/index.js')
+const methodOverride = require('method-override')
 //const passport = require('passport');
 //const session = require('express-session');
 //const GitHubStrategy = require('passport-github2').Strategy;
@@ -25,6 +26,7 @@ app.use(express.json())
   saveUninitialized:true,
 }))
 app.use(passport.initialize()).use(passport.session());*/
+app.use(methodOverride('_method'))
 app.use(express.urlencoded({ extended: true }))
 
 app.use((req, res, next) => {

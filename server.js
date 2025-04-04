@@ -7,58 +7,31 @@ Purpose: Startup script for the project
 // ==============================================
 // Section: Require statements
 // ===============================================
-const express = require('express')
-const app = express()
-require('dotenv').config()
+const express = require('express');
+const app = express();
+require('dotenv').config();
 const port = process.env.PORT || 3000
-const cors = require('cors')
-const database = require('./src/database/index.js')
-//const passport = require('passport');
-//const session = require('express-session');
-//const GitHubStrategy = require('passport-github2').Strategy;
+const cors = require('cors');
+const database = require('./src/database/index.js');
+const passport = require("./config/passport");
+const authRoutes = require("./routes/authRoutes");
+const userRoutes = require("./routes/userRoutes");
+const cookieParser = require("cookie-parser");
+
+
 
 app.use(cors())
 app.use(express.json())
-/*app.use(session({
-  secret:"secret",
+app.use(session({
+  secret:process.env.JWT_SECRET,
   resave: false,
-  saveUninitialized:true,
-}))
-app.use(passport.initialize()).use(passport.session());*/
-app.use(express.urlencoded({ extended: true }))
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*')
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Z-Key'
-  )
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, DELETE, OPTIONS'
-  )
-  next()
-})
-/*passport.use(new GitHubStrategy({
-  clientID:process.env.GITHUB_CLIENT_ID,
-  clientSecret:process.env.GITHUB_CLIENT_SECRET,
-  callbackURL:process.env.CALLBACK_URL
-},
-function(accessToken,refreshToken,profile,done){
-    return done(null,profile);
-  
-}
-));
+app.use(passport.initialize());
+app.use(passport.session());
 
-passport.serializeUser((user,done)=>{
-  done(null,user);
-})
-passport.deserializeUser((user,done)=>{
-  done(null,user);
-})*/
-
-app.use(express.static('public'))
-app.use('/', require('./src/routes/index.js'))
 
 app.listen(port)
 console.log(`🚀Web server listening on port ${port}🚀`)

@@ -29,4 +29,13 @@ async function updateBook(req, res) {
   }
 }
 
-module.exports = { insertMultipleBooks, updateBook }
+async function buildBooksForm(req, res) {
+  const { id } = req.params
+  const formData = await booksModel.buildBooksForm(id)
+  res.render('./books/update-book', {
+    title: 'Change Book Info',
+    fields: formData
+  })
+}
+
+module.exports = { insertMultipleBooks, updateBook, buildBooksForm }

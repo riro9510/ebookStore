@@ -1,4 +1,4 @@
-const { insertMultipleItems, updateItem } = require('../database/')
+const { insertMultipleItems, updateItem, getFormData } = require('../database/')
 
 /**
  * Insert multiple books into the mongoDB database
@@ -18,4 +18,9 @@ async function updateBook(id, data) {
   return result.matchedCount
 }
 
-module.exports = { insertMultipleBooks, updateBook }
+async function buildBooksForm(id = null) {
+  const formData = await getFormData('books', id)
+  return formData
+}
+
+module.exports = { insertMultipleBooks, updateBook, buildBooksForm }

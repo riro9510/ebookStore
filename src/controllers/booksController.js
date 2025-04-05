@@ -14,7 +14,7 @@ async function insertMultipleBooks(req, res) {
 /**
  * controller function to get books in the db by id.
  */
-const getSingle = async (req, res) => {
+const getSingleBook = async (req, res) => {
   try {
     // check if the given id is a valid db  item
     if (!ObjectId.isValid(req.params.id)) {
@@ -104,7 +104,7 @@ async function buildBooksForm(req, res) {
 
 module.exports = {
   insertMultipleBooks,
-  getSingle,
+  getSingleBook,
   getAllBooks,
   updateBook,
   deleteBook,

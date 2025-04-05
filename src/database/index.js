@@ -1,6 +1,6 @@
-require('dotenv').config()
-const { MongoClient, ServerApiVersion } = require('mongodb')
-const uri = process.env.DATABASE_URI
+require('dotenv').config();
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const uri = process.env.DATABASE_URI;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -8,24 +8,24 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
-})
+});
 
 /**
  * Ensure that the database connection is able to be established.
  */
-async function testDatabaseConnection () {
+async function testDatabaseConnection() {
   try {
-    await client.connect()
-    await client.db('admin').command({ ping: 1 })
-    console.log('Successfully pinged the database')
+    await client.connect();
+    await client.db('admin').command({ ping: 1 });
+    console.log('Successfully pinged the database');
   } catch (error) {
-    console.log('There was a problem connecting to the database.', error)
+    console.log('There was a problem connecting to the database.', error);
   } finally {
-    await client.close()
+    await client.close();
   }
 }
 
-testDatabaseConnection()
+testDatabaseConnection();
 
 /**
  * Inserts multiple documents into a specified MongoDB collection.
@@ -34,17 +34,76 @@ testDatabaseConnection()
  * @returns {Promise<Object>} A mapping of indexes to inserted document ObjectIds.
  */
 async function insertMultipleItems(collection, data) {
-  let insertedIds = []
+  let insertedIds = [];
   try {
-    await client.connect()
-    const db = client.db('ebookstore').collection(collection)
-    insertedIds = (await db.insertMany(data)).insertedIds
+    await client.connect();
+    const db = client.db('ebookstore').collection(collection);
+    insertedIds = (await db.insertMany(data)).insertedIds;
   } catch (error) {
-    console.log('There was a problem bulk inserting your data', error)
+    console.log('There was a problem bulk inserting your data', error);
   } finally {
-    await client.close()
+    await client.close();
   }
-  return insertedIds
+  return insertedIds;
 }
 
-module.exports = { testDatabaseConnection, insertMultipleItems }
+/**
+ * updates the mongodb object with data submitted
+ */
+async function updateItem(collection, id, data) {
+  try {
+    await client.connect();
+    const db = client.db('ebookstore').collection(collection);
+    // clean the data from all the empty values to avoid changing the database to null or empty strings
+    const cleanData = {};
+    for (const key in data) {
+      if (data[key] !== null && data[key] !== '') {
+        cleanData[key] = data[key];
+      }
+    }
+    const result = await db.updateOne(
+      { _id: new ObjectId(id) },
+      { $set: cleanData }
+    );
+    return result;
+  } catch (error) {
+    console.log('Error updating item:', error);
+  } finally {
+    await client.close();
+  }
+}
+
+/**
+ * get dynamic form data
+ */
+async function getFormData(collection, id) {
+  try {
+    await client.connect();
+    const db = client.db('ebookstore').collection(collection);
+    const query = id ? { _id: new ObjectId(id) } : {};
+    const formData = await db.findOne(query);
+    return formData;
+  } catch (error) {
+    console.log('Error gettting form data:', error);
+  } finally {
+    await client.close();
+  }
+}
+
+async function getDb() {
+  try {
+    await client.connect();
+    const db = client.db('ebookstore');
+    return db;
+  } catch (error) {
+    console.log('Error gettting database:', error);
+  }
+}
+
+module.exports = {
+  testDatabaseConnection,
+  insertMultipleItems,
+  updateItem,
+  getFormData,
+  getDb,
+};

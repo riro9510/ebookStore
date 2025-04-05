@@ -73,4 +73,22 @@ async function updateItem(collection, id, data) {
   }
 }
 
-module.exports = { testDatabaseConnection, insertMultipleItems, updateItem }
+/**
+ * get dynamic form data
+ */
+async function getFormData(collection, id) {
+  try {
+    await client.connect();
+    const db = client.db('ebookstore').collection(collection);
+    const query = id ? {_id: new ObjectId(id) } : {};
+    const formData = await db.findOne(query);
+    return formData;
+
+  } catch (error) {
+     console.log('Error gettting form data:', error);
+  } finally {
+    await client.close()
+  }
+}
+
+module.exports = { testDatabaseConnection, insertMultipleItems, updateItem, getFormData }

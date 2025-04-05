@@ -1,0 +1,13 @@
+<div>
+    <form action="/books/update" class="ebookstore-form">
+        <% for (const field in fields) { %>
+            <% if (field !== '_id') { %>
+             <label for="<% field %>"><%= field.charAt(0).toUpperCase() + field.slice(1) %></label>
+            <input type="<%= typeof fields[field] === 'number' ? 'number' : 'text' %>" name="<%= field %>" id="<%= field %>" value="<%= fields[field] || "" %>" optional>
+            <br>
+        <% } %>
+    <% } %>
+            
+    <button type="submit">Update Book</button>
+    </form>
+</div>

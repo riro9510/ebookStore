@@ -6,7 +6,7 @@ const doc = {
     description: 'ebookstore Api',
   },
   host: 'ebookstore-s1o5.onrender.com',
-  schemes: ['https'],
+  schemes: ['https', 'http'],
   // host: 'localhost:3000',
   // schemes: ['http']
 };

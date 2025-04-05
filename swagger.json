@@ -5,9 +5,12 @@
     "description": "ebookstore Api",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "ebookstore-s1o5.onrender.com",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": [
+    "https",
+    "http"
+  ],
   "paths": {
     "/": {
       "get": {
@@ -19,15 +22,12 @@
         }
       }
     },
-    "/books/": {
+    "/api-docs": {
       "get": {
         "description": "",
         "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          "default": {
+            "description": ""
           }
         }
       }
@@ -35,7 +35,9 @@
     "/books/bulk": {
       "post": {
         "description": "",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "responses": {
           "201": {
             "description": "Created"
@@ -46,17 +48,7 @@
         }
       }
     },
-    "/books/update": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/books/update/{id}": {
+    "/books/{id}": {
       "put": {
         "description": "",
         "parameters": [
@@ -78,9 +70,32 @@
             "description": "Internal Server Error"
           }
         }
-      }
-    },
-    "/books/{id}": {
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
       "delete": {
         "description": "",
         "parameters": [
@@ -95,8 +110,58 @@
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "404": {
             "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/books/update": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/books/update/{id}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/books/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
           },
           "500": {
             "description": "Internal Server Error"

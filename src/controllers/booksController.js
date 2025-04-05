@@ -74,15 +74,16 @@ const deleteBook = async (req, res) => {
     const { id } = req.params;
     //validate the ID format
     if (!ObjectId.isValid(id)) {
-      return req.status(400).json({ error: 'Invalid id format' });
+      return res.status(400).json({ error: 'Invalid id format' });
     }
     const bookId = new ObjectId(id);
+
     //call the model fuction to delete book
-    const result = await booksModel.deleteBookById(bookId);
+    const wasDeleted = await booksModel.deleteBookById(bookId);
 
     //if no book was deleted, return 404
-    if (result.deletedCount === 0) {
-      return res.status(404).json({ error: 'Book not avaailable' });
+    if (!wasDeleted) {
+      return res.status(404).json({ error: 'Book does not exist' });
     }
     // if is deleted
     res.status(200).json({ message: 'Book deleted successfully' });

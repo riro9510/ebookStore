@@ -1,6 +1,18 @@
+/*===============================================
+File: index.js
+Author: CSE 341 Group
+Date: April 05, 2025
+Purpose: This serves as place to store all generalized functions pertaining to the database.
+  * Please note that this saves GENERAL and GENERIC functions. If a function serves a specific
+  * route or controller, it should go in the models folder.
+  * For example, a function that fetches all books from the database belings in the booksModel.js file.
+===============================================*/
+
 require('dotenv').config();
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = process.env.DATABASE_URI;
+
+let database;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -28,6 +40,30 @@ async function testDatabaseConnection() {
 testDatabaseConnection();
 
 /**
+ * Establish connection to the database
+ * @returns Database object
+ */
+async function getDatabase() {
+  if (!database) {
+    await client.connect();
+    database = client.db('ebookstore');
+  }
+  return database;
+}
+
+async function query(collection, filter = {}) {
+  let results = [];
+  try {
+    const db = await getDatabase();
+    results = await db.collection(collection).find(filter).toArray();
+    console.log('Returned query', results);
+  } catch (error) {
+    console.log('There was a problem executing a query', error);
+  }
+  return results;
+}
+
+/**
  * Inserts multiple documents into a specified MongoDB collection.
  * @param {string} collection - The name of the collection.
  * @param {Array<Object>} data - An array of documents to insert.
@@ -36,13 +72,11 @@ testDatabaseConnection();
 async function insertMultipleItems(collection, data) {
   let insertedIds = [];
   try {
-    await client.connect();
-    const db = client.db('ebookstore').collection(collection);
-    insertedIds = (await db.insertMany(data)).insertedIds;
+    const db = await getDatabase();
+    const result = await db.collection(collection).insertMany(data);
+    insertedIds = result.insertedIds;
   } catch (error) {
     console.log('There was a problem bulk inserting your data', error);
-  } finally {
-    await client.close();
   }
   return insertedIds;
 }
@@ -52,8 +86,7 @@ async function insertMultipleItems(collection, data) {
  */
 async function updateItem(collection, id, data) {
   try {
-    await client.connect();
-    const db = client.db('ebookstore').collection(collection);
+    const db = await getDatabase();
     // clean the data from all the empty values to avoid changing the database to null or empty strings
     const cleanData = {};
     for (const key in data) {
@@ -61,42 +94,46 @@ async function updateItem(collection, id, data) {
         cleanData[key] = data[key];
       }
     }
-    const result = await db.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: cleanData }
-    );
+    const result = await db
+      .collection(collection)
+      .updateOne({ _id: new ObjectId(id) }, { $set: cleanData });
     return result;
   } catch (error) {
     console.log('Error updating item:', error);
-  } finally {
-    await client.close();
   }
 }
 
 /**
- * get dynamic form data
+ * Delete an item from a collection given the item's ID
+ * @param {string} collection The name of the collection
+ * @param {ObjectId} id The id of a MongoDB object
+ * @returns {boolean} Whether the operation was successful or not
  */
-async function getFormData(collection, id) {
+async function deleteById(collection, id) {
   try {
-    await client.connect();
-    const db = client.db('ebookstore').collection(collection);
-    const query = id ? { _id: new ObjectId(id) } : {};
-    const formData = await db.findOne(query);
-    return formData;
+    const db = await getDatabase();
+    const result = await db.collection(collection).deleteOne({ _id: id });
+    return result.deletedCount > 0;
   } catch (error) {
-    console.log('Error gettting form data:', error);
-  } finally {
-    await client.close();
+    console.log('There was a problem deleting the item with id', id, error);
+    return false;
   }
 }
 
-async function getDb() {
+/**
+ * Get dynamic form data from a collection by optional ID
+ * @param {string} collection - The name of the collection
+ * @param {string} [id] - Optional MongoDB document ID
+ * @returns {Promise<Object|null>} - The document or null if not found
+ */
+async function getFormData(collection, id) {
   try {
-    await client.connect();
-    const db = client.db('ebookstore');
-    return db;
+    const db = await getDatabase();
+    const query = id ? { _id: new ObjectId(id) } : {};
+    const formData = await db.collection(collection).findOne(query);
+    return formData;
   } catch (error) {
-    console.log('Error gettting database:', error);
+    console.log('Error getting form data:', error);
   }
 }
 
@@ -105,5 +142,6 @@ module.exports = {
   insertMultipleItems,
   updateItem,
   getFormData,
-  getDb,
+  deleteById,
+  query,
 };

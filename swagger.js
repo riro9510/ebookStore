@@ -1,20 +1,20 @@
-const swaggerAutogen = require('swagger-autogen')()
-const j2s = require('joi-to-swagger')
-const bookSchema = require('./src/schemas/bookSchema')
-const reviewSchema = require('./src/schemas/reviewSchema')
+const swaggerAutogen = require('swagger-autogen')();
+const j2s = require('joi-to-swagger');
+const bookSchema = require('./src/schemas/bookSchema');
+const reviewSchema = require('./src/schemas/reviewSchema');
 
-const { swagger: swaggerBookSchema } = j2s(bookSchema.bookSchema)
-const { swagger: swaggerReviewSchema } = j2s(reviewSchema.reviewSchema)
+const { swagger: swaggerBookSchema } = j2s(bookSchema.bookSchema);
+const { swagger: swaggerReviewSchema } = j2s(reviewSchema.reviewSchema);
 
 function generateSchemaFromJ2S(rawJ2SSchema) {
-  const output = {}
-  const props = rawJ2SSchema.properties || {}
+  const output = {};
+  const props = rawJ2SSchema.properties || {};
   for (const key in props) {
     if (props[key].example !== undefined) {
-      output[key] = props[key].example
+      output[key] = props[key].example;
     }
   }
-  return output
+  return output;
 }
 
 const doc = {
@@ -30,9 +30,9 @@ const doc = {
   },
   host: 'cse341-u4ne.onrender.com',
   schemes: ['https', 'http'],
-}
+};
 
-const outputFile = './swagger.json'
-const endpointsFiles = ['./src/routes/index.js']
+const outputFile = './swagger.json';
+const endpointsFiles = ['./src/routes/index.js'];
 
-swaggerAutogen(outputFile, endpointsFiles, doc)
+swaggerAutogen(outputFile, endpointsFiles, doc);

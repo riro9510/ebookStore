@@ -5,10 +5,10 @@ const doc = {
         title: 'ebookstore Api',
         description: 'ebookstore Api'
     },
-    // host: 'proj2-7bps.onrender.com',
-    // schemes: ['https']
-    host: 'localhost:3000',
-    schemes: ['http']
+    host: 'ebookstore-s1o5.onrender.com',
+    schemes: ['https']
+    // host: 'localhost:3000',
+    // schemes: ['http']
 };
 
 const output = './swagger.json';

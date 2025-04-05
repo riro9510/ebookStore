@@ -14,6 +14,7 @@ const port = process.env.PORT || 3000
 const cors = require('cors')
 const database = require('./src/database/index.js')
 const methodOverride = require('method-override')
+const expressLayouts = require('express-ejs-layouts')
 //const passport = require('passport');
 //const session = require('express-session');
 //const GitHubStrategy = require('passport-github2').Strategy;
@@ -59,10 +60,11 @@ passport.deserializeUser((user,done)=>{
   done(null,user);
 })*/
 
-// // VIEW ENGINE / TEMPLATES
-// app.set("view engine", "ejs")
-// app.use(expressLayouts)
-// app.set("layout", "./layouts/layout")
+// VIEW ENGINE / TEMPLATES
+app.set("view engine", "ejs")
+app.set('views', './src/views')
+app.use(expressLayouts)
+app.set("layout", "layouts/layout")
 
 // Allow the use of the static folder
 app.use(express.static('public'))

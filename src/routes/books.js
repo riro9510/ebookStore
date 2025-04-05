@@ -8,6 +8,7 @@ const booksController = require('../controllers/booksController')
 
 router.post('/bulk', booksController.insertMultipleBooks)
 
+router.get('/update', booksController.buildBooksForm)
 
 router.put('/update/:id', booksController.updateBook)
 

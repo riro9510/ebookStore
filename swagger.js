@@ -1,4 +1,4 @@
-const swagAuto = require('swagger-autogen')
+const swagAuto = require('swagger-autogen');
 
 const doc = {
     info: {

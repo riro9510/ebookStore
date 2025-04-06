@@ -81,10 +81,16 @@ async function insertMultipleItems(collection, data) {
   return insertedIds;
 }
 
+async function insertItem(collection, data) {
+  const db = await getDatabase();
+  const result = await db.collection(collection).insertOne(data);
+  return result.insertedId;
+}
+
 /**
  * updates the mongodb object with data submitted
  */
-async function updateItem(collection, id, data) {
+async function updateById(collection, id, data) {
   try {
     const db = await getDatabase();
     // clean the data from all the empty values to avoid changing the database to null or empty strings
@@ -140,8 +146,9 @@ async function getFormData(collection, id) {
 module.exports = {
   testDatabaseConnection,
   insertMultipleItems,
-  updateItem,
+  updateById,
   getFormData,
   deleteById,
   query,
+  insertItem,
 };

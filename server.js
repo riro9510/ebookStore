@@ -70,5 +70,7 @@ app.set('layout', 'layouts/layout');
 app.use(express.static('public'));
 app.use('/', require('./src/routes/index.js'));
 
+app.use(require('./src/middleware/errorHandler.js').errorHandler);
+
 app.listen(port);
 console.log(`🚀Web server listening on port ${port}🚀`);

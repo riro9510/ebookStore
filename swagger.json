@@ -7,10 +7,7 @@
   },
   "host": "ebookstore-s1o5.onrender.com",
   "basePath": "/",
-  "schemes": [
-    "https",
-    "http"
-  ],
+  "schemes": ["https", "http"],
   "paths": {
     "/": {
       "get": {
@@ -35,9 +32,7 @@
     "/books/bulk": {
       "post": {
         "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created"

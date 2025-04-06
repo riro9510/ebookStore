@@ -8,6 +8,14 @@ const { validateObjectId } = require('../utilities');
  * @param {import('express').NextFunction} next
  */
 async function createUser(req, res, next) {
+  /* #swagger.tags = ['Users']
+     #swagger.summary = 'Register a user'
+     #swagger.parameters['body'] = {
+        in: 'body',
+        required: 'true',
+        schema: { $ref: '#/definitions/Users' }
+     }
+  */
   try {
     const userId = await usersModel.createUser(req.body);
     res.status(201).json({ id: userId });
@@ -22,6 +30,14 @@ async function createUser(req, res, next) {
  * @param {import('express').Response} res
  */
 async function createMultipleUsers(req, res) {
+  /* #swagger.tags = ['Users']
+     #swagger.summary = 'Register multiple users'
+     #swagger.parameters['body'] = {
+        in: 'body',
+        required: 'true',
+        schema: [{ $ref: '#/definitions/Users' }]
+     }
+  */
   try {
     const usersList = req.body;
     const newUsersIds = await usersModel.createManyUsers(usersList);
@@ -39,6 +55,10 @@ async function createMultipleUsers(req, res) {
  * @param {import('express').NextFunction} next
  */
 async function deleteUserById(req, res, next) {
+  /* #swagger.tags = ['Users']
+     #swagger.summary = 'Delete a user given their ID'
+     #swagger.parameters['id'] = { in: 'path', required: true, type: 'string' }
+  */
   try {
     const userId = validateObjectId(req.params.id);
     const success = await usersModel.deleteUserById(userId);
@@ -62,6 +82,10 @@ async function deleteUserById(req, res, next) {
  * @param {import('express').NextFunction} next
  */
 async function getUserById(req, res, next) {
+  /* #swagger.tags = ['Users']
+     #swagger.summary = 'Get a user given their ID'
+     #swagger.parameters['id'] = { in: 'path', required: true, type: 'string' }
+  */
   try {
     const userId = validateObjectId(req.params.id);
     const results = await usersModel.getUserById(userId);
@@ -85,6 +109,9 @@ async function getUserById(req, res, next) {
  * @param {import('express').NextFunction} next
  */
 async function getAllUsers(req, res, next) {
+  /* #swagger.tags = ['Users']
+     #swagger.summary = 'Get all users in the database'
+  */
   try {
     const results = await usersModel.getAllUsers();
 
@@ -107,6 +134,15 @@ async function getAllUsers(req, res, next) {
  * @param {import('express').NextFunction} next
  */
 async function updateUserById(req, res, next) {
+  /* #swagger.tags = ['Users']
+     #swagger.summary = 'Update a user by ID'
+     #swagger.parameters['id'] = { in: 'path', required: true, type: 'string' }
+     #swagger.parameters['body'] = {
+       in: 'body',
+       required: true,
+       schema: { $ref: '#/definitions/Users' }
+     }
+  */
   try {
     const userId = validateObjectId(req.params.id);
     const success = await usersModel.updateUserById(userId, req.body);

@@ -4,6 +4,7 @@ const {
   deleteById,
   query,
   updateById,
+  insertItem,
 } = require('../database/');
 
 /**
@@ -14,6 +15,11 @@ const {
 async function insertMultipleBooks(dataList) {
   const insertedIds = await insertMultipleItems('books', dataList);
   return Object.values(insertedIds);
+}
+
+async function insertBook(bookData) {
+  const insertedId = await insertItem('books', bookData);
+  return insertedId;
 }
 
 /**
@@ -54,6 +60,7 @@ async function buildBooksForm(id = null) {
 
 module.exports = {
   insertMultipleBooks,
+  insertBook,
   updateBook,
   buildBooksForm,
   getBookById,

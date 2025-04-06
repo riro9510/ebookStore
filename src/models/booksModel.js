@@ -1,11 +1,9 @@
-const { deleteBook, getSingle } = require('../controllers/booksController');
-
 const {
   insertMultipleItems,
-  updateItem,
   getFormData,
   deleteById,
   query,
+  updateById,
 } = require('../database/');
 
 /**
@@ -22,7 +20,8 @@ async function insertMultipleBooks(dataList) {
  * get book by id in the db collection
  */
 async function getBookById(id) {
-  return await query('books', { _id: id });
+  const results = await query('books', { _id: id });
+  return results[0] || null;
 }
 
 /**
@@ -44,7 +43,7 @@ function deleteBookById(id) {
  * update item in the db based on id and collection
  */
 async function updateBook(id, data) {
-  const result = await updateItem('books', id, data);
+  const result = await updateById('books', id, data);
   return result.matchedCount;
 }
 
@@ -58,8 +57,6 @@ module.exports = {
   updateBook,
   buildBooksForm,
   getBookById,
-  getSingle,
   getAllBooks,
-  deleteBook,
   deleteBookById,
 };

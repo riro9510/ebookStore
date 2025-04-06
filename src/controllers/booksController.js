@@ -1,6 +1,7 @@
 // const { object } = require('joi');
 const booksModel = require('../models/booksModel');
 const { ObjectId } = require('mongodb');
+const { validateObjectId } = require('../utilities/index');
 async function insertMultipleBooks(req, res) {
   try {
     const booksList = req.body;
@@ -14,41 +15,46 @@ async function insertMultipleBooks(req, res) {
 /**
  * controller function to get books in the db by id.
  */
-const getSingleBook = async (req, res) => {
+const getSingleBook = async (req, res, next) => {
   try {
-    // check if the given id is a valid db  item
-    if (!ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({ err: 'Invalid id format' });
-    }
-    // convert the string id into an objectid
-    const bookId = new ObjectId(req.params.id);
-
-    //use the model to fetch the book from the database
+    // check if the given id is a valid db item
+    const bookId = validateObjectId(req.params.id);
     const result = await booksModel.getBookById(bookId);
+
     //if book is not found, respond with error code 404
     if (!result) {
-      return res.status(404).json({ error: 'Book not found' });
+      const err = new Error('Book not found');
+      err.status = 404;
+      throw err;
     }
+
     // if book is found, respond with book data
     res.status(200).json(result);
   } catch (err) {
     // catch and log any unexpected errors respond with 500
-    console.error(err);
-    res.status(500).json({ error: 'failed to get book' });
+    next(err);
   }
 };
+
 /**
  * controller function to get all books from the database
  */
-const getAllBooks = async (req, res) => {
+const getAllBooks = async (req, res, next) => {
   try {
-    const books = await booksModel.getBookById();
+    const books = await booksModel.getAllBooks();
+
+    if (books.length === 0) {
+      const err = new Error('No books found');
+      err.status = 404;
+      throw err;
+    }
+
     res.status(200).json(books);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ erro: 'Failed to retrieve books' });
+    next(err);
   }
 };
+
 /**
  * update item in the db based on id and collection
  */

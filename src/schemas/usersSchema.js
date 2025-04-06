@@ -1,5 +1,9 @@
 const Joi = require('joi');
 
+/**
+ * Schema for a single user registration
+ * @type {Joi.ObjectSchema}
+ */
 const registerUserSchema = Joi.object({
   username: Joi.string().required().example('TestUser'),
   password: Joi.string().required().example('ThisIsAPassword'),
@@ -15,9 +19,16 @@ const registerUserSchema = Joi.object({
   }).required(),
 });
 
+/**
+ * Schema for registering multiple users
+ * @type {Joi.ArraySchema}
+ */
 const registerManyUsersSchema = Joi.array()
   .items(registerUserSchema)
   .min(1)
   .required();
 
-module.exports = { registerUserSchema, registerManyUsersSchema };
+module.exports = {
+  registerUserSchema,
+  registerManyUsersSchema,
+};

@@ -1,6 +1,12 @@
 const usersModel = require('../models/usersModel');
 const { validateObjectId } = require('../utilities');
 
+/**
+ * Create a new user from request body
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 async function createUser(req, res, next) {
   try {
     const userId = await usersModel.createUser(req.body);
@@ -10,6 +16,11 @@ async function createUser(req, res, next) {
   }
 }
 
+/**
+ * Create multiple users from an array in request body
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ */
 async function createMultipleUsers(req, res) {
   try {
     const usersList = req.body;
@@ -21,6 +32,12 @@ async function createMultipleUsers(req, res) {
   }
 }
 
+/**
+ * Delete a user by ID
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 async function deleteUserById(req, res, next) {
   try {
     const userId = validateObjectId(req.params.id);
@@ -38,6 +55,12 @@ async function deleteUserById(req, res, next) {
   }
 }
 
+/**
+ * Get a user by ID
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 async function getUserById(req, res, next) {
   try {
     const userId = validateObjectId(req.params.id);
@@ -55,6 +78,12 @@ async function getUserById(req, res, next) {
   }
 }
 
+/**
+ * Get all users from the database
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 async function getAllUsers(req, res, next) {
   try {
     const results = await usersModel.getAllUsers();
@@ -71,6 +100,12 @@ async function getAllUsers(req, res, next) {
   }
 }
 
+/**
+ * Update a user by ID with fields from request body
+ * @param {import('express').Request} req
+ * @param {import('express').Response} res
+ * @param {import('express').NextFunction} next
+ */
 async function updateUserById(req, res, next) {
   try {
     const userId = validateObjectId(req.params.id);

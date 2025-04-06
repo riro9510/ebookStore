@@ -1,5 +1,9 @@
 const Joi = require('joi');
 
+/**
+ * Schema for validating book objects
+ * @type {Joi.ObjectSchema}
+ */
 const bookSchema = Joi.object({
   title: Joi.string().required().example('The Silent Shore'),
   author: Joi.string().required().example('Elaine Morgan'),

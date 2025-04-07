@@ -8,6 +8,7 @@ Purpose: Startup script for the project
 // Section: Require statements
 // ===============================================
 const express = require('express');
+const session = require('express-session');
 const app = express();
 require('dotenv').config();
 const port = process.env.PORT || 3000
@@ -15,36 +16,32 @@ const cors = require('cors');
 const database = require('./src/database/index.js');
 const passport = require("./src/config/passport.js");
 const authRoutes = require("./src/routes/authRoutes.js");
-const userRoutes = require("./routes/userRoutes");
+const userRoutes = require("./src/routes/users.js");
 const cookieParser = require("cookie-parser");
+const expressLayouts = require('express-ejs-layouts');
+const methodOverride = require('method-override');
 
 
 
-app.use(cors())
+
+app.use(cors({
+  /*origin:'https://ebookstore-s1o5.onrender.com/', // Remove for production
+    credentials:true
+  */}
+))
 app.use(express.json())
-app.use(session({
-  secret:process.env.JWT_SECRET,
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false }
-}))
 app.use(methodOverride('_method'));
 app.use(express.urlencoded({ extended: true }))
 
-app.use((req, res, next) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Z-Key'
-  );
-  res.setHeader(
-    'Access-Control-Allow-Methods',
-    'GET, POST, PUT, DELETE, OPTIONS'
-  );
-  next();
-});
-//app.use(passport.initialize());
-//app.use(passport.session());
+app.use(cookieParser());
+app.use(session({
+  secret: 'mysecretkey',  
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // change to true in production
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 // VIEW ENGINE / TEMPLATES
 app.set('view engine', 'ejs');

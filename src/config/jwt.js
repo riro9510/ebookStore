@@ -1,4 +1,4 @@
-const jwt = require("jasonwebtoken");
+/*const jwt = require("jasonwebtoken");
 const SECRETKEY = process.env.JWT_SECRET;
 
 function generateToken(user){
@@ -14,4 +14,4 @@ function verifyToken(token){
     return jwt.verify(token,SECRETKEY)
 }
 
-module.exports = { generateToken, verifyToken };
+module.exports = { generateToken, verifyToken };*/

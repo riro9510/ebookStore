@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Project by Steven Thomas, Dylan Winters,Brandon Christopher, Blessing Madhuma and Ricardo Ramos",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",

@@ -5,11 +5,13 @@ function githubCallback(req, res) {
     return res.status(401).json({ message: "No Authorized" });
   }
 
-  const token = jwt.generateToken(req.user);
+  req.login(req.user, (err) => {
+    if (err) {
+      return res.status(500).json({ message: "Error al iniciar sesión" });
+    }
 
-  res.cookie("jwt", token, { httpOnly: true, secure: false });
-
-  res.json({ message: "Autenticated", token });
+    res.json({ message: "Autenticado correctamente" });
+  });
 }
 
 module.exports = { githubCallback };

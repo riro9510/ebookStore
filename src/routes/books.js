@@ -1,14 +1,14 @@
-const router = require('express').Router()
-const booksController = require('../controllers/booksController')
+const router = require('express').Router();
+const booksController = require('../controllers/booksController');
 
-// route to get all books.
-// router.get('/', booksController.getAll);
+router.post('/bulk', booksController.insertMultipleBooks);
+router.post('/', booksController.insertBook);
 
-// router.get('/:id', booksController.getSingle); // route to get a books by id.
+router.put('/:id', booksController.updateBook);
+router.get('/:id', booksController.getSingleBook);
+router.delete('/:id', booksController.deleteBook);
+router.get('/update/:id', booksController.buildBooksForm);
+router.post('/update/:id', booksController.updateBook);
+router.get('/', booksController.getAllBooks);
 
-router.post('/bulk', booksController.insertMultipleBooks)
-
-router.put('/update/:id', booksController.updateBook)
-
-// router.delete('/:id', booksController.deleteOne)
-module.exports = router
+module.exports = router;

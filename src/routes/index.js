@@ -5,7 +5,7 @@ router.use('/', require('./swagger'));
 
 router.use('/books', require('./books'));
 router.use('/users', require('./users'));
-router.get("login", passport.authenticate("github", { scope: ["read:user"] }));
+router.get("/login", passport.authenticate("github", { scope: ["read:user"] }));
 
 router.get("/auth/callback", passport.authenticate("github", { failureRedirect: "/" }), githubCallback);
 

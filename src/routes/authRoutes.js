@@ -6,7 +6,14 @@ const router = express.Router();
 
 router.get("login", passport.authenticate("github", { scope: ["read:user"] }));
 
-router.get("/auth/callback", passport.authenticate("github", { failureRedirect: "/" }), githubCallback);
+router.get(
+    '/auth/callback',
+    passport.authenticate('github', { failureRedirect: '/' }),
+    (req, res) => {
+      res.redirect('/');
+    }
+  );
+  
 
 router.get("/logout",function(req,res,next){
     req.logOut(function(err){

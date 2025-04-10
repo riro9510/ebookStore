@@ -1,10 +1,13 @@
 const router = require('express').Router();
 const passport = require('passport');
+const { githubCallback } = require("../controller/authController");
 router.use('/', require('./swagger'));
 
 router.use('/books', require('./books'));
 router.use('/users', require('./users'));
-router.get("/login",passport.authenticate('github'),(req,res)=>{});
+router.get("login", passport.authenticate("github", { scope: ["read:user"] }));
+
+router.get("/auth/callback", passport.authenticate("github", { failureRedirect: "/" }), githubCallback);
 
 router.get("/logout",function(req,res,next){
     req.logOut(function(err){

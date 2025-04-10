@@ -38,7 +38,7 @@ app.use(session({
   secret: 'mysecretkey',  
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // change to true for render
+  cookie: { secure: false } 
 }));
 app.use(passport.initialize());
 app.use(passport.session());

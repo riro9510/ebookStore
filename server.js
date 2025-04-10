@@ -25,7 +25,7 @@ const methodOverride = require('method-override');
 
 
 app.use(cors({
-  /*origin:'https://ebookstore-s1o5.onrender.com/', // Remove for production
+  /*origin:'https://ebookstore-s1o5.onrender.com/', // Remove for "production"
     credentials:true
   */}
 ))
@@ -38,7 +38,7 @@ app.use(session({
   secret: 'mysecretkey',  
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // change to true in production
+  cookie: { secure: false } // change to true for render
 }));
 app.use(passport.initialize());
 app.use(passport.session());

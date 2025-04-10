@@ -15,7 +15,6 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((user, done) => {
-  const user = { id, displayName: "User" }; 
   done(null, user);
 });
 

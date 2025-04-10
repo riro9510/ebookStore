@@ -7,7 +7,7 @@ router.use('/books', require('./books'));
 router.use('/users', require('./users'));
 router.get("/login", passport.authenticate("github", { scope: ["read:user"] }));
 
-router.get("/auth/callback", passport.authenticate("github", { failureRedirect: "/" }), githubCallback);
+router.get("/github/callback", passport.authenticate("github", { failureRedirect: "/" }), githubCallback);
 
 router.get("/logout",function(req,res,next){
     req.logOut(function(err){

@@ -36,10 +36,14 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser());
 app.use(session({
-  secret: 'mysecretkey',  
+  secret: 'mysecretkey',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: true } 
+  cookie: {
+    secure: true, 
+    httpOnly: true,
+    sameSite: 'None',  
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());

@@ -11,6 +11,7 @@ const express = require('express');
 const session = require('express-session');
 const app = express();
 require('dotenv').config();
+require('dotenv').config();
 const port = process.env.PORT || 3000
 const cors = require('cors');
 const database = require('./src/database/index.js');

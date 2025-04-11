@@ -1,27 +1,30 @@
 const router = require('express').Router();
+const passport = require('passport');
 
 router.use('/', require('./swagger'));
 
 router.use('/books', require('./books'));
 router.use('/users', require('./users'));
-router.get("/login",passport.authenticate('github'),(req,res)=>{});
+router.get('/login', passport.authenticate('github'), (req, res) => {});
 
-router.get("/logout",function(req,res,next){
-    req.logOut(function(err){
-        if(err){ return next(err);}
-        res.redirect("/");
-    })
-})
+router.get('/logout', function (req, res, next) {
+  req.logOut(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect('/');
+  });
+});
 router.get('/', (req, res) => {
-  const loggedStatus = req.session.user !== undefined
-    ? `Logged in as ${req.session.user.displayName}`
-    : 'Logged out';
+  const loggedStatus =
+    req.session.user !== undefined
+      ? `Logged in as ${req.session.user.displayName}`
+      : 'Logged out';
 
   res.send(`
     <p>${loggedStatus}</p>
     <a href="/api-docs/">Click here to go to the API documentation</a>
   `);
 });
-
 
 module.exports = router;

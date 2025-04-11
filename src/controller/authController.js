@@ -9,7 +9,7 @@ function githubCallback(req, res) {
       return res.status(500).json({ message: "Error al iniciar sesión" });
     }
 
-   
+    req.session.user = req.user;
     res.redirect('/'); 
   });
 }

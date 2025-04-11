@@ -1,5 +1,7 @@
 const passport = require('passport');
 const GitHubStrategy = require('passport-github2').Strategy;
+require('dotenv').config();
+
 
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
@@ -11,10 +13,12 @@ function(accessToken, refreshToken, profile, done) {
 }));
 
 passport.serializeUser((user, done) => {
-  done(null, user.id);
+  console.log("Serializando usuario:", user);
+  done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
+  console.log("Serializando usuario:", user);
   done(null, user);
 });
 

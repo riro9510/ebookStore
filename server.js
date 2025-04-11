@@ -11,6 +11,7 @@ const express = require('express');
 const session = require('express-session');
 const app = express();
 require('dotenv').config();
+require('dotenv').config();
 const port = process.env.PORT || 3000
 const cors = require('cors');
 const database = require('./src/database/index.js');
@@ -35,10 +36,14 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser());
 app.use(session({
-  secret: 'mysecretkey',  
+  secret: process.env.SECRET || 'mysecretkey',
   resave: false,
   saveUninitialized: false,
-  cookie: { secure: false } // change to true for render
+  cookie: {
+    secure: process.env.NODE_ENV === 'production', 
+    httpOnly: true,
+    sameSite: 'None',  
+  }
 }));
 app.use(passport.initialize());
 app.use(passport.session());

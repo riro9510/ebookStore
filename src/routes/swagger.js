@@ -2,14 +2,16 @@ const router = require('express').Router();
 const swaggerUi = require('swagger-ui-express');
 const swaggerDoc = require('../../swagger.json');
 
-router.use('/api-docs', [
-  /* #swagger.ignore = true */
-  ...swaggerUi.serve,
-]);
+const swaggerOptions = {
+  swaggerOptions: {
+    withCredentials: true,
+  },
+};
 
-router.get('/api-docs', (req, res) => {
-  /* #swagger.ignore = true */
-  swaggerUi.setup(swaggerDoc)(req, res);
-});
+router.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDoc, swaggerOptions)
+);
 
 module.exports = router;

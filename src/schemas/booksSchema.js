@@ -22,4 +22,6 @@ const bookSchema = Joi.object({
   price: Joi.number().required().example(14.99),
 });
 
-module.exports = { bookSchema };
+const manyBooksSchema = Joi.array().items(bookSchema).min(1).required();
+
+module.exports = { bookSchema, manyBooksSchema };

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const passport = require('passport');
+const passport = require('../config/passport.js');
 const { githubCallback } = require("../controller/authController");
 router.use('/', require('./swagger'));
 

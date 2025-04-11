@@ -19,6 +19,8 @@ const cookieParser = require('cookie-parser');
 const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 
+app.set('trust proxy', 1);
+
 const allowedOrigins = {
   development: [
     'http://localhost:3000',

@@ -36,11 +36,11 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use(cookieParser());
 app.use(session({
-  secret: 'mysecretkey',
+  secret: process.env.SECRET || 'mysecretkey',
   resave: false,
   saveUninitialized: false,
   cookie: {
-    secure: true, 
+    secure: process.env.NODE_ENV === 'production', 
     httpOnly: true,
     sameSite: 'None',  
   }

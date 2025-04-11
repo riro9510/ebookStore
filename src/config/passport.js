@@ -13,10 +13,12 @@ function(accessToken, refreshToken, profile, done) {
 }));
 
 passport.serializeUser((user, done) => {
+  console.log("Serializando usuario:", user);
   done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
+  console.log("Serializando usuario:", user);
   done(null, user);
 });
 

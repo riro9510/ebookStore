@@ -1,10 +1,10 @@
-const { deleteBook, getSingle } = require('../controllers/booksController');
-
 const {
   insertMultipleItems,
-  updateItem,
   getFormData,
-  getDb,
+  deleteById,
+  query,
+  updateById,
+  insertItem,
 } = require('../database/');
 
 /**
@@ -16,46 +16,40 @@ async function insertMultipleBooks(dataList) {
   const insertedIds = await insertMultipleItems('books', dataList);
   return Object.values(insertedIds);
 }
+
+async function insertBook(bookData) {
+  const insertedId = await insertItem('books', bookData);
+  return insertedId;
+}
+
 /**
  * get book by id in the db collection
  */
 async function getBookById(id) {
-  const db = await getDb();
-  return await db.collection('books').findOne({ _id: id });
+  const results = await query('books', { _id: id });
+  return results[0] || null;
 }
-//model function to get all books from the books collection
+
+/**
+ * Get all books in the database
+ * @returns {Promise<Array>} A list of books
+ */
 async function getAllBooks() {
-  try {
-    //connect to the database
-    const db = await getDb();
-    //query the collection and convert the result to an array
-    const books = await db.collection('books').find({}).toArray();
-    return books;
-  } catch (err) {
-    //log and re-throw errors so they can be handed by the controller
-    console.error('Error fetching all books:', err);
-    throw err;
-  }
+  return await query('books');
 }
+
 /**
  * model function to delete a book by id from the books collection
  */
-async function deleteBookById(id) {
-  try {
-    const db = await getDb();
-    const result = await db.collection('books').deleteOne({ _id: id });
-    return result;
-  } catch (err) {
-    console.error('Error deleting book', err);
-    throw err;
-  }
+function deleteBookById(id) {
+  return deleteById('books', id);
 }
 
 /**
  * update item in the db based on id and collection
  */
 async function updateBook(id, data) {
-  const result = await updateItem('books', id, data);
+  const result = await updateById('books', id, data);
   return result.matchedCount;
 }
 
@@ -66,11 +60,10 @@ async function buildBooksForm(id = null) {
 
 module.exports = {
   insertMultipleBooks,
+  insertBook,
   updateBook,
   buildBooksForm,
   getBookById,
-  getSingle,
   getAllBooks,
-  deleteBook,
   deleteBookById,
 };

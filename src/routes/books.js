@@ -1,19 +1,16 @@
 const router = require('express').Router();
 const booksController = require('../controllers/booksController');
+const {isAuthenticated} = require("../middleware/authentificate.js");
+const passport = require('passport');
 
-// route to get all books.
+router.post('/bulk',isAuthenticated, booksController.insertMultipleBooks);
+router.post('/',isAuthenticated, booksController.insertBook);
+
+router.put('/:id',isAuthenticated, booksController.updateBook);
+router.get('/:id', booksController.getSingleBook);
+router.delete('/:id',isAuthenticated, booksController.deleteBook);
+router.get('/update/:id', booksController.buildBooksForm);
+router.post('/update/:id',isAuthenticated, booksController.updateBook);
 router.get('/', booksController.getAllBooks);
 
-// router.get('/:id', booksController.getSingle); // route to get a books by id.
-
-router.post('/bulk', booksController.insertMultipleBooks)
-router.post('/', booksController.insertBook)
-router.get('/', booksController.getAllBooks)
-router.get('/:id', booksController.getSingleBook)
-router.put('/:id', booksController.updateBook)
-router.delete('/:id', booksController.deleteBook)
-router.get('/search', booksController.searchBooks)
-router.patch('/:id', booksController.updateBookPartial)
-router.get('/update', booksController.buildBooksForm)
-router.post('/update/:id', booksController.updateBook)
-module.exports = router
+module.exports = router;

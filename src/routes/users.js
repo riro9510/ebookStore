@@ -1,17 +1,33 @@
-const express = require('express');
-const router = express.Router();
+const router = require('express').Router();
+const usersController = require('../controllers/usersController');
+const usersSchema = require('../schemas/usersSchema');
+const { validateJoiSchema } = require('../middleware/validator');
+const {isAuthenticated} = require("../middleware/authentificate.js");
+const passport = require('passport');
 
+// GET routes
+router.get('/', usersController.getAllUsers);
+router.get('/:id', usersController.getUserById);
 
-const usersController = require('../controllers/usersConrollers.js');
+// POST routes
+router.post(
+  '/',
+  isAuthenticated,
+  validateJoiSchema(usersSchema.registerUserSchema),
+  usersController.createUser
+);
 
-router.get('/', usersController.getAll);
+router.post(
+  '/bulk',
+  isAuthenticated,
+  validateJoiSchema(usersSchema.registerManyUsersSchema),
+  usersController.createMultipleUsers
+);
 
-router.get('/:id', usersController.getSingle);
+// PUT route
+router.put('/:id',isAuthenticated, usersController.updateUserById);
 
-router.post('/',isAuthenticated, usersController.createUser);
+// DELETE route
+router.delete('/:id',isAuthenticated,usersController.deleteUserById);
 
-router.put('/:id',isAuthenticated, usersController.updateUser);
-
-router.delete('/:id',isAuthenticated, usersController.deleteUser);
-
-module.exports =router;
+module.exports = router;

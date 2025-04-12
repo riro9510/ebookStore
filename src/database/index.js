@@ -37,8 +37,6 @@ async function testDatabaseConnection() {
   }
 }
 
-testDatabaseConnection();
-
 /**
  * Establish connection to the database
  * @returns Database object
@@ -51,12 +49,17 @@ async function getDatabase() {
   return database;
 }
 
+async function closeConnection() {
+  if (client && client.topology?.isConnected()) {
+    await client.close();
+  }
+}
+
 async function query(collection, filter = {}) {
   let results = [];
   try {
     const db = await getDatabase();
     results = await db.collection(collection).find(filter).toArray();
-    console.log('Returned query', results);
   } catch (error) {
     console.log('There was a problem executing a query', error);
   }
@@ -151,4 +154,5 @@ module.exports = {
   deleteById,
   query,
   insertItem,
+  closeConnection,
 };

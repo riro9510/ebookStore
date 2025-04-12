@@ -12,7 +12,6 @@ const session = require('express-session');
 const app = express();
 require('dotenv').config();
 require('dotenv').config();
-const port = process.env.PORT || 3000;
 const cors = require('cors');
 const passport = require('./src/config/passport.js');
 const cookieParser = require('cookie-parser');
@@ -75,5 +74,4 @@ app.use('/', require('./src/routes/index.js'));
 
 app.use(require('./src/middleware/errorHandler.js').errorHandler);
 
-app.listen(port);
-console.log(`🚀Web server listening on port ${port}🚀`);
+module.exports = app;

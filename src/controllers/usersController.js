@@ -18,7 +18,7 @@ async function createUser(req, res, next) {
   */
   try {
     const userId = await usersModel.createUser(req.body);
-    res.status(201).json({ id: userId });
+    res.status(201).json({ _id: userId });
   } catch (err) {
     next(err);
   }

@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const booksController = require('../controllers/booksController');
-const { isAuthenticated } = require('../middleware/authentificate');
+const { isAuthenticated } = require('../middleware/authenticate');
 const { validateJoiSchema } = require('../middleware/validator');
 const { bookSchema, manyBooksSchema } = require('../schemas/booksSchema');
 

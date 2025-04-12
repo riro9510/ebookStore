@@ -12,39 +12,53 @@ const session = require('express-session');
 const app = express();
 require('dotenv').config();
 require('dotenv').config();
-const port = process.env.PORT || 3000
 const cors = require('cors');
-const database = require('./src/database/index.js');
-const passport = require("./src/config/passport.js");
-const authRoutes = require("./src/routes/authRoutes.js");
-const userRoutes = require("./src/routes/users.js");
-const cookieParser = require("cookie-parser");
+const passport = require('./src/config/passport.js');
+const cookieParser = require('cookie-parser');
 const expressLayouts = require('express-ejs-layouts');
 const methodOverride = require('method-override');
 
+app.set('trust proxy', 1);
 
+const allowedOrigins = {
+  development: [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://10.0.0.100:3000',
+  ],
+  production: ['https://ebookstore-s1o5.onrender.com'],
+};
 
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const env = process.env.NODE_ENV || 'development';
+      const isAllowed = !origin || allowedOrigins[env].includes(origin);
+      return isAllowed
+        ? callback(null, true)
+        : callback(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  })
+);
 
-app.use(cors({
-  /*origin:'https://ebookstore-s1o5.onrender.com/', // Remove for "production"
-    credentials:true
-  */}
-))
-app.use(express.json())
+app.use(express.json());
 app.use(methodOverride('_method'));
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
-app.use(session({
-  secret: process.env.SECRET || 'mysecretkey',
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure: process.env.NODE_ENV === 'production', 
-    httpOnly: true,
-    sameSite: 'None',  
-  }
-}));
+app.use(
+  session({
+    secret: process.env.SECRET || 'mysecretkey',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'lax',
+    },
+  })
+);
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -60,5 +74,4 @@ app.use('/', require('./src/routes/index.js'));
 
 app.use(require('./src/middleware/errorHandler.js').errorHandler);
 
-app.listen(port);
-console.log(`🚀Web server listening on port ${port}🚀`);
+module.exports = app;

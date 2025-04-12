@@ -1,6 +1,18 @@
-require('dotenv').config()
-const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb')
-const uri = process.env.DATABASE_URI
+/*===============================================
+File: index.js
+Author: CSE 341 Group
+Date: April 05, 2025
+Purpose: This serves as place to store all generalized functions pertaining to the database.
+  * Please note that this saves GENERAL and GENERIC functions. If a function serves a specific
+  * route or controller, it should go in the models folder.
+  * For example, a function that fetches all books from the database belings in the booksModel.js file.
+===============================================*/
+
+require('dotenv').config();
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+const uri = process.env.DATABASE_URI;
+
+let database;
 
 const client = new MongoClient(uri, {
   serverApi: {
@@ -8,24 +20,51 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
-})
+});
 
 /**
  * Ensure that the database connection is able to be established.
  */
 async function testDatabaseConnection() {
   try {
-    await client.connect()
-    await client.db('admin').command({ ping: 1 })
-    console.log('Successfully pinged the database')
+    await client.connect();
+    await client.db('admin').command({ ping: 1 });
+    console.log('Successfully pinged the database');
   } catch (error) {
-    console.log('There was a problem connecting to the database.', error)
+    console.log('There was a problem connecting to the database.', error);
   } finally {
-    await client.close()
+    await client.close();
   }
 }
 
-testDatabaseConnection()
+/**
+ * Establish connection to the database
+ * @returns Database object
+ */
+async function getDatabase() {
+  if (!database) {
+    await client.connect();
+    database = client.db('ebookstore');
+  }
+  return database;
+}
+
+async function closeConnection() {
+  if (client && client.topology?.isConnected()) {
+    await client.close();
+  }
+}
+
+async function query(collection, filter = {}) {
+  let results = [];
+  try {
+    const db = await getDatabase();
+    results = await db.collection(collection).find(filter).toArray();
+  } catch (error) {
+    console.log('There was a problem executing a query', error);
+  }
+  return results;
+}
 
 /**
  * Inserts multiple documents into a specified MongoDB collection.
@@ -34,61 +73,86 @@ testDatabaseConnection()
  * @returns {Promise<Object>} A mapping of indexes to inserted document ObjectIds.
  */
 async function insertMultipleItems(collection, data) {
-  let insertedIds = []
+  let insertedIds = [];
   try {
-    await client.connect()
-    const db = client.db('ebookstore').collection(collection)
-    insertedIds = (await db.insertMany(data)).insertedIds
+    const db = await getDatabase();
+    const result = await db.collection(collection).insertMany(data);
+    insertedIds = result.insertedIds;
   } catch (error) {
-    console.log('There was a problem bulk inserting your data', error)
-  } finally {
-    await client.close()
+    console.log('There was a problem bulk inserting your data', error);
   }
-  return insertedIds
+  return insertedIds;
+}
+
+async function insertItem(collection, data) {
+  const db = await getDatabase();
+  const result = await db.collection(collection).insertOne(data);
+  return result.insertedId;
 }
 
 /**
  * updates the mongodb object with data submitted
  */
-async function updateItem(collection, id, data) {
+async function updateById(collection, id, data) {
   try {
-    await client.connect()
-    const db = client.db('ebookstore').collection(collection)
+    const db = await getDatabase();
     // clean the data from all the empty values to avoid changing the database to null or empty strings
-    const cleanData = {}
+    const cleanData = {};
     for (const key in data) {
       if (data[key] !== null && data[key] !== '') {
-        cleanData[key] = data[key]
+        cleanData[key] = data[key];
       }
     }
-    const result = await db.updateOne(
-      { _id: new ObjectId(id) },
-      { $set: cleanData }
-    )
-    return result
+    const result = await db
+      .collection(collection)
+      .updateOne({ _id: new ObjectId(id) }, { $set: cleanData });
+    return result;
   } catch (error) {
-    console.log('Error updating item:', error)
-  } finally {
-    await client.close()
+    console.log('Error updating item:', error);
   }
 }
 
 /**
- * get dynamic form data
+ * Delete an item from a collection given the item's ID
+ * @param {string} collection The name of the collection
+ * @param {ObjectId} id The id of a MongoDB object
+ * @returns {boolean} Whether the operation was successful or not
  */
-async function getFormData(collection, id) {
+async function deleteById(collection, id) {
   try {
-    await client.connect();
-    const db = client.db('ebookstore').collection(collection);
-    const query = id ? {_id: new ObjectId(id) } : {};
-    const formData = await db.findOne(query);
-    return formData;
-
+    const db = await getDatabase();
+    const result = await db.collection(collection).deleteOne({ _id: id });
+    return result.deletedCount > 0;
   } catch (error) {
-     console.log('Error gettting form data:', error);
-  } finally {
-    await client.close()
+    console.log('There was a problem deleting the item with id', id, error);
+    return false;
   }
 }
 
-module.exports = { testDatabaseConnection, insertMultipleItems, updateItem, getFormData }
+/**
+ * Get dynamic form data from a collection by optional ID
+ * @param {string} collection - The name of the collection
+ * @param {string} [id] - Optional MongoDB document ID
+ * @returns {Promise<Object|null>} - The document or null if not found
+ */
+async function getFormData(collection, id) {
+  try {
+    const db = await getDatabase();
+    const query = id ? { _id: new ObjectId(id) } : {};
+    const formData = await db.collection(collection).findOne(query);
+    return formData;
+  } catch (error) {
+    console.log('Error getting form data:', error);
+  }
+}
+
+module.exports = {
+  testDatabaseConnection,
+  insertMultipleItems,
+  updateById,
+  getFormData,
+  deleteById,
+  query,
+  insertItem,
+  closeConnection,
+};

@@ -1,16 +1,33 @@
-const router = require('express').Router()
-const booksController = require('../controllers/booksController')
+const router = require('express').Router();
+const booksController = require('../controllers/booksController');
+const { isAuthenticated } = require('../middleware/authenticate');
+const { validateJoiSchema } = require('../middleware/validator');
+const { bookSchema, manyBooksSchema } = require('../schemas/booksSchema');
 
-// route to get all books.
-// router.get('/', booksController.getAll);
+// Create books
+router.post(
+  '/',
+  isAuthenticated,
+  validateJoiSchema(bookSchema),
+  booksController.insertBook
+);
+router.post(
+  '/bulk',
+  isAuthenticated,
+  validateJoiSchema(manyBooksSchema),
+  booksController.insertMultipleBooks
+);
 
-// router.get('/:id', booksController.getSingle); // route to get a books by id.
+// Update books
+router.put('/:id', isAuthenticated, booksController.updateBook);
+router.post('/update/:id', isAuthenticated, booksController.updateBook);
+router.get('/update/:id', booksController.buildBooksForm);
 
-router.post('/bulk', booksController.insertMultipleBooks)
+// Read books
+router.get('/:id', booksController.getSingleBook);
+router.get('/', booksController.getAllBooks);
 
-router.get('/update', booksController.buildBooksForm)
+// Delete books
+router.delete('/:id', isAuthenticated, booksController.deleteBook);
 
-router.put('/update/:id', booksController.updateBook)
-
-// router.delete('/:id', booksController.deleteOne)
-module.exports = router
+module.exports = router;

@@ -1,9 +1,9 @@
-import globals from 'globals'
-import pluginJs from '@eslint/js'
-import prettier from 'eslint-plugin-prettier'
-import prettierConfig from 'eslint-config-prettier'
+import globals from 'globals';
+import pluginJs from '@eslint/js';
+import prettier from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
 
-/** @type {import('eslint').Linter.FlatConfig[]} */
+/** @type {import('eslint').FlatConfig.ConfigArray} */
 export default [
   {
     files: ['**/*.js'],
@@ -12,6 +12,15 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.node,
+      },
+    },
+  },
+  {
+    // ✅ Add Jest globals to test files
+    files: ['**/*.test.js'],
+    languageOptions: {
+      globals: {
+        ...globals.jest,
       },
     },
   },
@@ -24,4 +33,4 @@ export default [
       'no-process-env': 'off', // ✅ Allow process.env
     },
   },
-]
+];

@@ -96,7 +96,10 @@ const getSingleBook = async (req, res, next) => {
       throw err;
     }
 
-    res.status(200).json(result);
+    res.status(200).render('./books/book-detail', {
+      title: 'Book Details',
+      result,
+    });
   } catch (err) {
     next(err);
   }
@@ -128,7 +131,10 @@ const getAllBooks = async (req, res, next) => {
       throw err;
     }
 
-    res.status(200).json(books);
+    res.status(200).render('./books/books-list', {
+      books,
+      title: 'Book List',
+    });
   } catch (err) {
     next(err);
   }

@@ -1,0 +1,25 @@
+<h1><%- title  %></h1>
+
+  <div>
+    <h2><%= book.title %></h2>
+    <p><strong>Author:</strong> <%= book.author %></p>
+    <p><strong>Genre:</strong> <%= book.genre %></p>
+    <p><strong>Description:</strong> <%= book.description %></p>
+    <p><strong>Pages:</strong> <%= book.pages %></p>
+    <% if (book.stock) { %>
+      <p><strong>Stock:</strong> <%= book.stock %> available</p>
+    <% } else { %>
+      <p><strong>Stock:</strong> Not available</p>
+    <% } %>
+    <p><strong>Price:</strong> $<%= book.price.toFixed(2) %></p>
+
+    <h3>Tags:</h3>
+    <% if (book.tags && book.tags.length > 0) { %>
+      <ul>
+        <% book.tags.forEach(tag => { %>
+          <li><%= tag %></li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p>No tags available.</p>
+    <% } %>

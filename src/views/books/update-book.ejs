@@ -1,5 +1,6 @@
 <div>
     <form action="/books/update" class="ebookstore-form">
+        <input type="hidden" name="_method" value="PUT">
         <% for (const field in fields) { %>
             <% if (field !== '_id') { %>
              <label for="<% field %>"><%= field.charAt(0).toUpperCase() + field.slice(1) %></label>

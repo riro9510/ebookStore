@@ -95,10 +95,10 @@ const getSingleBook = async (req, res, next) => {
       err.status = 404;
       throw err;
     }
-
+    let book = result;
     res.status(200).render('./books/book-detail', {
       title: 'Book Details',
-      result,
+      book,
     });
   } catch (err) {
     next(err);
@@ -130,7 +130,6 @@ const getAllBooks = async (req, res, next) => {
       err.status = 404;
       throw err;
     }
-
     res.status(200).render('./books/books-list', {
       books,
       title: 'Book List',
@@ -227,12 +226,19 @@ const deleteBook = async (req, res) => {
  * @param {import('express').Response} res
  */
 async function buildBooksForm(req, res) {
-  const { id } = req.params;
+  const { id } = req.params || '';
   const formData = await booksModel.buildBooksForm(id);
-  res.render('./books/update-book', {
-    title: 'Change Book Info',
+  if (id) {
+    res.render('./books/update-book', {
+    title: 'Book Forms',
     fields: formData,
   });
+  } else {
+    res.render('./books/add-book', {
+      title: 'Book Forms',
+      fields: formData,
+    })
+  }
 }
 
 module.exports = {

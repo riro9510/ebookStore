@@ -6,7 +6,7 @@ const { bookSchema, manyBooksSchema } = require('../schemas/booksSchema');
 
 // Create books
 router.post(
-  '/',
+  '/add',
   isAuthenticated,
   validateJoiSchema(bookSchema),
   booksController.insertBook
@@ -17,7 +17,7 @@ router.post(
   validateJoiSchema(manyBooksSchema),
   booksController.insertMultipleBooks
 );
-
+router.get('/add', booksController.buildBooksForm)
 // Update books
 router.put('/:id', isAuthenticated, booksController.updateBook);
 router.post('/update/:id', isAuthenticated, booksController.updateBook);

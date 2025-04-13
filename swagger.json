@@ -97,6 +97,14 @@
             "description": "Internal server error"
           }
         }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
       }
     },
     "/books/bulk": {

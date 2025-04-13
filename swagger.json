@@ -5,10 +5,116 @@
     "description": "ebookstore Api",
     "version": "1.0.0"
   },
-  "host": "ebookstore-s1o5.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
-  "schemes": ["https", "http"],
+  "schemes": ["http"],
   "paths": {
+    "/github/callback": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/login": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/logout": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/books/": {
+      "post": {
+        "tags": ["Books"],
+        "summary": "Insert a new book into the database",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Books"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Book created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "ObjectId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Books"],
+        "summary": "Get all books in the database",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "List of books",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Books"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "No books found"
+          }
+        }
+      }
+    },
     "/books/bulk": {
       "post": {
         "tags": ["Books"],
@@ -47,68 +153,14 @@
               }
             }
           },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Failed to add books"
-          }
-        }
-      }
-    },
-    "/books/": {
-      "post": {
-        "tags": ["Books"],
-        "summary": "Insert a new book into the database",
-        "description": "",
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Books"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Book created successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "id": {
-                  "type": "string",
-                  "example": "ObjectId"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Internal server error"
-          }
-        }
-      },
-      "get": {
-        "tags": ["Books"],
-        "summary": "Get all books in the database",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "List of books",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Books"
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "404": {
-            "description": "No books found"
           }
         }
       }
@@ -135,8 +187,14 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
             "description": "Book updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Book not found"
@@ -192,6 +250,9 @@
           "400": {
             "description": "Invalid ID format"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Book not found"
           },
@@ -223,8 +284,14 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
+            "description": "OK"
+          },
+          "204": {
             "description": "Book updated successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Book not found"
@@ -233,19 +300,25 @@
             "description": "Failed to update book"
           }
         }
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
       }
     },
     "/users/": {
-      "get": {
-        "tags": ["Users"],
-        "summary": "Get all users in the database",
-        "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
       "post": {
         "tags": ["Users"],
         "summary": "Register a user",
@@ -266,6 +339,54 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "summary": "Get all users in the database",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/users/bulk": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Register multiple users",
+        "description": "",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Users"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -312,6 +433,9 @@
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       },
@@ -330,38 +454,29 @@
         "responses": {
           "204": {
             "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
     },
-    "/users/bulk": {
-      "post": {
-        "tags": ["Users"],
-        "summary": "Register multiple users",
+    "/auth/github": {
+      "get": {
         "description": "",
-        "produces": ["application/json"],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Users"
-              }
-            }
-          }
-        ],
         "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/auth/github/callback": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }

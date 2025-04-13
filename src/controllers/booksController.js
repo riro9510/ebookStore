@@ -27,7 +27,7 @@ async function insertMultipleBooks(req, res) {
     const booksList = req.body;
     const newBookIds = await booksModel.insertMultipleBooks(booksList);
     res.setHeader('Content-Type', 'application/json');
-    res.status(201).json({ newBookIds });
+    res.status(201).json(Object.values(newBookIds));
   } catch {
     res.status(500).json({ error: 'Failed to add books' });
   }
@@ -59,7 +59,7 @@ async function insertBook(req, res, next) {
     const bookData = req.body;
     const newBookId = await booksModel.insertBook(bookData);
     res.setHeader('Content-Type', 'application/json');
-    res.status(201).json({ id: newBookId });
+    res.status(201).json({ _id: newBookId });
   } catch (err) {
     next(err);
   }
@@ -96,7 +96,10 @@ const getSingleBook = async (req, res, next) => {
       throw err;
     }
 
-    res.status(200).json(result);
+    res.status(200).render('./books/book-detail', {
+      title: 'Book Details',
+      result,
+    });
   } catch (err) {
     next(err);
   }
@@ -128,7 +131,10 @@ const getAllBooks = async (req, res, next) => {
       throw err;
     }
 
-    res.status(200).json(books);
+    res.status(200).render('./books/books-list', {
+      books,
+      title: 'Book List',
+    });
   } catch (err) {
     next(err);
   }
@@ -148,7 +154,7 @@ async function updateBook(req, res) {
        required: true,
        schema: { $ref: '#/definitions/Books' }
      }
-     #swagger.responses[201] = {
+     #swagger.responses[204] = {
        description: 'Book updated successfully'
      }
      #swagger.responses[404] = {
@@ -166,7 +172,7 @@ async function updateBook(req, res) {
     if (result === 0) {
       res.status(404).json({ error: 'Book not found' });
     } else {
-      res.status(201).json({ message: 'Book updated.' });
+      res.status(200).json({ message: 'Book updated.' });
     }
   } catch {
     res.status(500).json({ error: 'Failed to update book.' });

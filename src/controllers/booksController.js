@@ -230,14 +230,14 @@ async function buildBooksForm(req, res) {
   const formData = await booksModel.buildBooksForm(id);
   if (id) {
     res.render('./books/update-book', {
-    title: 'Book Forms',
-    fields: formData,
-  });
+      title: 'Book Forms',
+      fields: formData,
+    });
   } else {
     res.render('./books/add-book', {
       title: 'Book Forms',
       fields: formData,
-    })
+    });
   }
 }
 

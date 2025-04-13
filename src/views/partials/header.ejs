@@ -3,6 +3,10 @@
         <a href="/" title="return to home">eBOOKSTORE</a>
     </div>
     <div>
-        <a title="click to sign into account" href="/login">Sign In</a>
+        <% if (user) { %>
+            <a title="click to logout" href="/logout">Logout</a>
+        <% } else { %>
+            <a title="click to sign into account" href="/login">Sign In</a>
+        <% } %>
     </div>
 </header>

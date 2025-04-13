@@ -22,7 +22,7 @@ router.get(
 );
 // Login page
 router.get('/login', (req, res) => {
-  res.send('<a href="/auth/github">Login With Github</a>');
+  res.redirect('/auth/github');
 });
 
 // Home page

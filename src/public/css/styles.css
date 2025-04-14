@@ -1,0 +1,77 @@
+body {
+  background-color: #1c7daa;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1 {
+  text-align: center;
+  border-bottom: 3px dotted #0d4e6c;
+}
+
+#wrapper {
+  margin: 10px;
+  background-color: #faebd7;
+  border-radius: 2px;
+  box-shadow: 0px 0px 6px 8px #0d4e6c;
+}
+
+header {
+  display: flex;
+  padding: 25px;
+  padding-right: 15px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d4e6c;
+}
+
+header a {
+  color: #faebd7;
+  font-weight: 500;
+}
+
+#storeName {
+  font-size: 2rem;
+}
+
+#nav {
+  background-color: #1c7daaa4;
+}
+
+#nav ul {
+  margin: 0;
+  padding: 10px;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+#nav a:hover {
+  background-color: #0d4e6c;
+  padding: 3px;
+  border-radius: 3px;
+  color: #faebd7;
+}
+
+#nav a {
+  color: #000000;
+}
+#books-pages {
+  margin: 5%;
+}
+#books-list {
+  margin: 0;
+  padding: 10px;
+  background-color: #1c7daaa4;
+  list-style: none;
+  border-radius: 2px;
+}
+
+#books-list li {
+  margin: 10px;
+  padding: 5px;
+  border: 1px solid #0d4e6c;
+}

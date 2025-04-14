@@ -2,7 +2,7 @@ const router = require('express').Router();
 const baseController = require('../controllers/baseController');
 
 const passport = require('../config/passport.js');
-const { githubCallback } = require('../controller/authController');
+// const { githubCallback } = require('../controllers/');
 router.use('/', require('./swagger'));
 
 // Mount routes
@@ -17,28 +17,31 @@ router.use('/auth', require('./auth'));
 
 router.get(
   '/github/callback',
-  passport.authenticate('github', { failureRedirect: '/' }),
-  githubCallback
+  passport.authenticate('github', { failureRedirect: '/' })
+  // githubCallback
 );
 // Login page
 router.get('/login', (req, res) => {
-  res.send('<a href="/auth/github">Login With Github</a>');
+  res.redirect('/auth/github');
 });
 
 // Home page
-router.get('/', (req, res) => {
-  console.log('user:', req.user);
-  console.log('session:', req.session);
-  const loggedStatus =
-    req.user !== undefined
-      ? `Logged in as ${req.user.displayName}`
-      : 'Logged out';
+router.get(
+  '/',
+  // (req, res) => {
+  // console.log('user:', req.user);
+  // console.log('session:', req.session);
+  // const loggedStatus =
+  //   req.user !== undefined
+  //     ? `Logged in as ${req.user.displayName}`
+  //     : 'Logged out';
 
-  res.send(`
-    <p>${loggedStatus}</p>
-    <a href="/api-docs/">Click here to go to the API documentation</a>
-  `);
-});
+  // res.send(`
+  //   <p>${loggedStatus}</p>
+  //   <a href="/api-docs/">Click here to go to the API documentation</a>
+  // `)},
+  baseController.buildHome
+);
 
 // Logout
 router.get('/logout', function (req, res, next) {

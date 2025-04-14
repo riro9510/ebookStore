@@ -1,11 +1,14 @@
-<h1><%- title  %></h1>
-<% if (books.lenth) { %>
- <ul>
+
+
+<div id="books-pages">
+  <h1><%- title  %></h1>
+<% if (books.length > 0) { %>
+ <ul id="books-list">
     <% books.forEach(book => { %>
-      <li><strong><%= book.title %></strong> by: <%= book.author %> <a href="/book/<%= book.id %>"></a></li>    
+      <li><strong><%= book.title %></strong> by: <%= book.author %> <a href="/books/<%= book._id %>">View Details</a></li>    
     <% }) %>
  </ul>
 <% } else { %>
     <p>No books avaliable</p>
 <% } %>
- 
+</div>

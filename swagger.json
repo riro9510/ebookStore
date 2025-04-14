@@ -541,11 +541,16 @@
           "400": {
             "description": "Bad Request"
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "500": {
             "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -661,9 +666,6 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "404": {
             "description": "Cart not found",
             "schema": {
@@ -709,9 +711,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
           }
         }
       },
@@ -731,9 +730,6 @@
           },
           "400": {
             "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "500": {
             "description": "Internal Server Error"
@@ -786,9 +782,6 @@
               }
             }
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "404": {
             "description": "Cart not found",
             "schema": {
@@ -832,9 +825,6 @@
           "400": {
             "description": "Bad Request"
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "500": {
             "description": "Internal Server Error"
           }
@@ -845,9 +835,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "500": {
             "description": "Internal Server Error"
@@ -873,9 +860,6 @@
           "400": {
             "description": "Bad Request"
           },
-          "401": {
-            "description": "Unauthorized"
-          },
           "404": {
             "description": "Not Found"
           },
@@ -897,9 +881,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
@@ -925,9 +906,6 @@
           },
           "400": {
             "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "404": {
             "description": "Not Found"
@@ -1019,6 +997,57 @@
               "example": "99501"
             }
           }
+        }
+      }
+    },
+    "Cart": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "example": "643a6b29f3d5b8d2d8e4d531"
+        },
+        "books": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "example": "643a6b29f3d5b8d2d8e4d531"
+            },
+            "quantity": {
+              "type": "number",
+              "example": 1
+            }
+          }
+        },
+        "totalPrice": {
+          "type": "number",
+          "example": 49.98
+        }
+      }
+    },
+    "Review": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Excellent read"
+        },
+        "comment": {
+          "type": "string",
+          "example": "I really enjoyed the character development and plot."
+        },
+        "rating": {
+          "type": "number",
+          "example": 4.5
+        },
+        "author": {
+          "type": "string",
+          "example": "609e12672f8fb814c89f9e3b"
+        },
+        "bookId": {
+          "type": "string",
+          "example": "609e127b2f8fb814c89f9e3d"
         }
       }
     }

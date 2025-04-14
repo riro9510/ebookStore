@@ -2,10 +2,14 @@ const swagAuto = require('swagger-autogen');
 const j2s = require('joi-to-swagger');
 const bookSchema = require('./src/schemas/booksSchema');
 const userSchema = require('./src/schemas/usersSchema');
+const storeSchema = require('./src/schemas/storeSchema')
+const reviewSchema = require('./src/schemas/reviewSchema')
 require('dotenv').config();
 
 const { swagger: swaggerBookSchema } = j2s(bookSchema.bookSchema);
 const { swagger: swaggerUserSchema } = j2s(userSchema.registerUserSchema);
+const { swagger: swaggerStoreSchema} = j2s(storeSchema.cartSchema);
+const { swagger: swaggerReviewSchema} = j2s(reviewSchema.reviewSchema);
 
 const isDev = process.env.NODE_ENV === 'development';
 
@@ -35,6 +39,8 @@ const doc = {
   definitions: {
     Books: generateSchemaFromJ2S(swaggerBookSchema),
     Users: generateSchemaFromJ2S(swaggerUserSchema),
+    Cart: generateSchemaFromJ2S(swaggerStoreSchema),
+    Review: generateSchemaFromJ2S(swaggerReviewSchema)
   },
   host: isDev
     ? process.env.DEV_IP || 'localhost:3000'

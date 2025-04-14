@@ -11,7 +11,7 @@ router.use('/books', require('./books'));
 router.use('/users', require('./users'));
 router.use('/auth', require('./auth'));
 router.use("/cart", require('./store'));
-router.use('/review',require('./review.js'));
+router.use('/review',require('./review'));
 
 // router.get('/',
 //   // #swagger.ignore = true

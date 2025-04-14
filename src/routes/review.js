@@ -6,13 +6,12 @@ const {reviewSchema} = require('../schemas/reviewSchema');
 
 router.post(
   '/',
-  isAuthenticated,
   validateJoiSchema(reviewSchema),
   reviewController.createReview
 );
-router.put('/:id', isAuthenticated, reviewController.updateReview);
-router.get('/',isAuthenticated,reviewController.getAllReviews);
-router.get('/:id', isAuthenticated, reviewController.getReviewById);
-router.delete('/:id', isAuthenticated, reviewController.deleteReview);
+router.put('/:id', reviewController.updateReview);
+router.get('/',reviewController.getAllReviews);
+router.get('/:id', reviewController.getReviewById);
+router.delete('/:id', reviewController.deleteReview);
 
 module.exports = router;

@@ -10,7 +10,7 @@ const {
  * Creates a new cart (order) and inserts it into the 'order' collection.
  * @param {Object} orderData - The order object to insert
  * @param {string} orderData.userId - ID of the user who owns the order
- * @param {Object.<string, number>} orderData.books - An object where keys are book IDs and values are quantities
+ * @param {Object.<string, string>} orderData.books - An object where keys are book IDs and values are quantities
  * @param {number} orderData.totalPrice - Total price of the order
  * @returns {ObjectId} The ID of the newly created order document
  */
@@ -22,6 +22,10 @@ async function creatNewCart(orderData) {
 async function getCartById(id) {
   const results = await query('order', { _id: id });
   return results[0] || null;
+}
+async function getAllCart() {
+  const results = await query('order');
+  return results;
 }
 
 
@@ -71,7 +75,9 @@ async function updateCart(id, data) {
 
 module.exports = {
   creatNewCart,
+  getAllCart,
   updateCart,
   getCartById,
   deleteCartById,
+  completePurchase
 };

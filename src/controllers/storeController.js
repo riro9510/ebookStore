@@ -56,7 +56,7 @@ async function createNewCart(req, res) {
     const cartItems = req.body;
     const newcartId = await storeModel.creatNewCart(cartItems);
     res.setHeader('Content-Type', 'application/json');
-    res.status(201).json(Object.values(newcartId));
+    res.status(201).json(newcartId);
   } catch {
     res.status(500).json({ error: 'Failed to add books' });
   }
@@ -79,15 +79,26 @@ const getSingleCartById = async (req, res, next) => {
       throw err;
     }
 
-    res.status(200).render('./cart/cart-detail', {
-      title: 'Cart details',
-      result,
-    });
+    res.status(200).json(result);
   } catch (err) {
     next(err);
   }
 };
+const getAllCart = async (req, res, next) => {
+  try {
+    const result = await storeModel.getAllCart();
 
+    if (!result) {
+      const err = new Error('cart not found');
+      err.status = 404;
+      throw err;
+    }
+
+    res.status(200).json(result);
+  } catch (err) {
+    next(err);
+  }
+};
 async function updateCart(req, res) {
    /* 
     #swagger.tags = ['Cart']
@@ -233,6 +244,7 @@ const completePurchase = async (req, res) =>{
 }
 module.exports = {
   createNewCart,
+  getAllCart,
   getSingleCartById,
   updateCart,
   deteleCart,

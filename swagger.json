@@ -5,7 +5,7 @@
     "description": "ebookstore Api",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "ebookstore-s1o5.onrender.com",
   "basePath": "/",
   "schemes": [
     "https",
@@ -57,14 +57,8 @@
         "tags": [
           "Books"
         ],
-        "tags": [
-          "Books"
-        ],
         "summary": "Insert a new book into the database",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
         ],
@@ -106,10 +100,6 @@
         }
       },
       "get": {
-        "tags": [
-          "Books"
-        ],
-        "summary": "Get all books in the database",
         "description": "",
         "responses": {
           "default": {
@@ -123,14 +113,8 @@
         "tags": [
           "Books"
         ],
-        "tags": [
-          "Books"
-        ],
         "summary": "Insert multiple books into the database",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
         ],
@@ -158,9 +142,6 @@
                   "example": [
                     "ObjectId"
                   ],
-                  "example": [
-                    "ObjectId"
-                  ],
                   "items": {
                     "type": "string"
                   }
@@ -185,9 +166,6 @@
     },
     "/books/{id}": {
       "put": {
-        "tags": [
-          "Books"
-        ],
         "tags": [
           "Books"
         ],
@@ -231,9 +209,6 @@
         "tags": [
           "Books"
         ],
-        "tags": [
-          "Books"
-        ],
         "summary": "Get a book by ID",
         "description": "",
         "parameters": [
@@ -260,9 +235,6 @@
         }
       },
       "delete": {
-        "tags": [
-          "Books"
-        ],
         "tags": [
           "Books"
         ],
@@ -297,9 +269,6 @@
     },
     "/books/update/{id}": {
       "post": {
-        "tags": [
-          "Books"
-        ],
         "tags": [
           "Books"
         ],
@@ -387,9 +356,6 @@
         "tags": [
           "Users"
         ],
-        "tags": [
-          "Users"
-        ],
         "summary": "Register a user",
         "description": "",
         "parameters": [
@@ -418,9 +384,6 @@
         "tags": [
           "Users"
         ],
-        "tags": [
-          "Users"
-        ],
         "summary": "Get all users in the database",
         "description": "",
         "responses": {
@@ -435,14 +398,8 @@
         "tags": [
           "Users"
         ],
-        "tags": [
-          "Users"
-        ],
         "summary": "Register multiple users",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
         ],
@@ -480,9 +437,6 @@
         "tags": [
           "Users"
         ],
-        "tags": [
-          "Users"
-        ],
         "summary": "Get a user given their ID",
         "description": "",
         "parameters": [
@@ -500,9 +454,6 @@
         }
       },
       "put": {
-        "tags": [
-          "Users"
-        ],
         "tags": [
           "Users"
         ],
@@ -534,9 +485,6 @@
         }
       },
       "delete": {
-        "tags": [
-          "Users"
-        ],
         "tags": [
           "Users"
         ],
@@ -1021,11 +969,6 @@
         },
         "tags": {
           "type": "array",
-          "example": [
-            "suspense",
-            "thriller",
-            "coastal"
-          ],
           "example": [
             "suspense",
             "thriller",

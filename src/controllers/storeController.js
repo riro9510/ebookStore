@@ -236,4 +236,5 @@ module.exports = {
   getSingleCartById,
   updateCart,
   deteleCart,
+  completePurchase
 };

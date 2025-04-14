@@ -16,7 +16,7 @@ const {
  */
 async function creatNewCart(orderData) {
   const result = await insertItem('order', orderData);
-  return result.insertedId;
+  return result;
 }
 
 async function getCartById(id) {

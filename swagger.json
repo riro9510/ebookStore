@@ -8,6 +8,7 @@
   "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
+    "https",
     "http"
   ],
   "paths": {
@@ -56,8 +57,14 @@
         "tags": [
           "Books"
         ],
+        "tags": [
+          "Books"
+        ],
         "summary": "Insert a new book into the database",
         "description": "",
+        "produces": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -99,6 +106,10 @@
         }
       },
       "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get all books in the database",
         "description": "",
         "responses": {
           "default": {
@@ -112,8 +123,14 @@
         "tags": [
           "Books"
         ],
+        "tags": [
+          "Books"
+        ],
         "summary": "Insert multiple books into the database",
         "description": "",
+        "produces": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -141,6 +158,9 @@
                   "example": [
                     "ObjectId"
                   ],
+                  "example": [
+                    "ObjectId"
+                  ],
                   "items": {
                     "type": "string"
                   }
@@ -165,6 +185,9 @@
     },
     "/books/{id}": {
       "put": {
+        "tags": [
+          "Books"
+        ],
         "tags": [
           "Books"
         ],
@@ -208,6 +231,9 @@
         "tags": [
           "Books"
         ],
+        "tags": [
+          "Books"
+        ],
         "summary": "Get a book by ID",
         "description": "",
         "parameters": [
@@ -234,6 +260,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Books"
+        ],
         "tags": [
           "Books"
         ],
@@ -268,6 +297,9 @@
     },
     "/books/update/{id}": {
       "post": {
+        "tags": [
+          "Books"
+        ],
         "tags": [
           "Books"
         ],
@@ -355,6 +387,9 @@
         "tags": [
           "Users"
         ],
+        "tags": [
+          "Users"
+        ],
         "summary": "Register a user",
         "description": "",
         "parameters": [
@@ -383,6 +418,9 @@
         "tags": [
           "Users"
         ],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get all users in the database",
         "description": "",
         "responses": {
@@ -397,8 +435,14 @@
         "tags": [
           "Users"
         ],
+        "tags": [
+          "Users"
+        ],
         "summary": "Register multiple users",
         "description": "",
+        "produces": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -436,6 +480,9 @@
         "tags": [
           "Users"
         ],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get a user given their ID",
         "description": "",
         "parameters": [
@@ -453,6 +500,9 @@
         }
       },
       "put": {
+        "tags": [
+          "Users"
+        ],
         "tags": [
           "Users"
         ],
@@ -484,6 +534,9 @@
         }
       },
       "delete": {
+        "tags": [
+          "Users"
+        ],
         "tags": [
           "Users"
         ],
@@ -526,6 +579,416 @@
           }
         }
       }
+    },
+    "/cart/": {
+      "post": {
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/cart/{id}": {
+      "put": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Update a cart by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "ID of the cart to update"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "example": "object"
+                },
+                "properties": {
+                  "type": "object",
+                  "properties": {
+                    "userId": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "string"
+                        }
+                      }
+                    },
+                    "books": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "object"
+                        },
+                        "additionalProperties": {
+                          "type": "object",
+                          "properties": {
+                            "type": {
+                              "type": "string",
+                              "example": "integer"
+                            }
+                          }
+                        },
+                        "example": {
+                          "type": "object",
+                          "properties": {
+                            "bookId123": {
+                              "type": "number",
+                              "example": 1
+                            },
+                            "bookId456": {
+                              "type": "number",
+                              "example": 2
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "totalPrice": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "example": "number"
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": {
+                  "type": "array",
+                  "example": [
+                    "userId",
+                    "books",
+                    "totalPrice"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Cart updated."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Cart not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Cart not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to update the cart",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Failed to update the cart."
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Delete a cart by ID",
+        "description": "Deletes a cart from the database using its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "description": "The ID of the cart to delete"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart deleted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Cart deleted"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid ID format",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Invalid cart ID format"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Cart not found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Cart not found"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "500": {
+            "description": "Failed to delete cart",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "error": {
+                  "type": "string",
+                  "example": "Internal server error"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/review/": {
+      "post": {
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/review/{id}": {
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -558,6 +1021,11 @@
         },
         "tags": {
           "type": "array",
+          "example": [
+            "suspense",
+            "thriller",
+            "coastal"
+          ],
           "example": [
             "suspense",
             "thriller",

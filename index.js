@@ -3,6 +3,8 @@ const app = require('./server');
 const { testDatabaseConnection } = require('./src/database');
 const port = process.env.PORT || 3000;
 
+require('./swagger');
+
 testDatabaseConnection();
 
 app.listen(port, () => {

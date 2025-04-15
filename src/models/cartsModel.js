@@ -1,4 +1,4 @@
-const { deleteById, query, updateById, insertItem } = require('../database/');
+const { deleteById, query, updateById, insertItem } = require('../database');
 /**
  * Creates a new cart (order) and inserts it into the 'order' collection.
  * @param {Object} orderData - The order object to insert

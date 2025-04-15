@@ -1,4 +1,4 @@
-const storeModel = require('../models/storeModel');
+const cartsModel = require('../models/cartsModel.js');
 const { ObjectId } = require('mongodb');
 const { validateObjectId } = require('../utilities/index');
 
@@ -21,9 +21,9 @@ async function createNewCart(req, res) {
   */
   try {
     const cartItems = req.body;
-    const newcartId = await storeModel.creatNewCart(cartItems);
+    const newcartId = await cartsModel.creatNewCart(cartItems);
     res.setHeader('Content-Type', 'application/json');
-    res.status(201).json(newcartId);
+    res.status(201).json({ _id: newcartId });
   } catch {
     res.status(500).json({ error: 'Failed to add books' });
   }
@@ -52,7 +52,7 @@ const getSingleCartById = async (req, res, next) => {
   */
   try {
     const cartId = validateObjectId(req.params.id);
-    const result = await storeModel.getCartById(cartId);
+    const result = await cartsModel.getCartById(cartId);
 
     if (!result) {
       const err = new Error('cart not found');
@@ -87,7 +87,7 @@ const getAllCart = async (req, res, next) => {
     }
   */
   try {
-    const result = await storeModel.getAllCart();
+    const result = await cartsModel.getAllCart();
 
     if (!result) {
       const err = new Error('cart not found');
@@ -128,7 +128,7 @@ async function updateCart(req, res) {
   try {
     const { id } = req.params;
     const data = req.body;
-    const result = await storeModel.updateCart(id, data);
+    const result = await cartsModel.updateCart(id, data);
 
     if (result === 0) {
       res.status(404).json({ error: 'Cart not found' });
@@ -170,7 +170,7 @@ const deleteCart = async (req, res) => {
     }
 
     const cartId = new ObjectId(id);
-    const wasDeleted = await storeModel.deleteCartById(cartId);
+    const wasDeleted = await cartsModel.deleteCartById(cartId);
 
     if (!wasDeleted) {
       return res.status(404).json({ error: 'Cart does not exist' });
@@ -209,7 +209,7 @@ const completePurchase = async (req, res) => {
     }
 
     const cartId = new ObjectId(id);
-    const purchase = await storeModel.completePurchase(cartId);
+    const purchase = await cartsModel.completePurchase(cartId);
 
     return res.status(200).json(purchase);
   } catch (err) {

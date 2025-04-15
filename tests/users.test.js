@@ -5,7 +5,7 @@ const db = require('../src/database');
 let createdUserId;
 let bulkUserIds = [];
 
-describe('/users/ routes', () => {
+describe('/api/users/ routes', () => {
   const validUser = {
     username: 'TestUser',
     password: 'ThisIsAPassword',
@@ -36,64 +36,66 @@ describe('/users/ routes', () => {
 
   afterAll(async () => {
     if (createdUserId) {
-      await request(app).delete(`/users/${createdUserId}`);
+      await request(app).delete(`/api/users/${createdUserId}`);
     }
 
     for (const id of bulkUserIds) {
-      await request(app).delete(`/users/${id}`);
+      await request(app).delete(`/api/users/${id}`);
     }
 
     await db.closeConnection?.();
   });
 
-  it('POST /users - should create a user with valid input', async () => {
-    const res = await request(app).post('/users').send(validUser);
+  it('POST /api/users - should create a user with valid input', async () => {
+    const res = await request(app).post('/api/users').send(validUser);
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('_id');
     createdUserId = res.body._id;
   });
 
-  it('POST /users - should fail with missing required fields', async () => {
-    const res = await request(app).post('/users').send(invalidUserMissingField);
+  it('POST /api/users - should fail with missing required fields', async () => {
+    const res = await request(app)
+      .post('/api/users')
+      .send(invalidUserMissingField);
     expect(res.statusCode).toBe(400);
   });
 
-  it('POST /users - should fail with invalid zip format', async () => {
-    const res = await request(app).post('/users').send(invalidZipUser);
+  it('POST /api/users - should fail with invalid zip format', async () => {
+    const res = await request(app).post('/api/users').send(invalidZipUser);
     expect(res.statusCode).toBe(400);
   });
 
-  it('GET /users/:id - should return 404 for non-existent ObjectId', async () => {
-    const res = await request(app).get(`/users/${fakeObjectId}`);
+  it('GET /api/users/:id - should return 404 for non-existent ObjectId', async () => {
+    const res = await request(app).get(`/api/users/${fakeObjectId}`);
     expect(res.statusCode).toBe(404);
   });
 
-  it('GET /users/:id - should return 400 for malformed ObjectId', async () => {
-    const res = await request(app).get(`/users/${malformedObjectId}`);
+  it('GET /api/users/:id - should return 400 for malformed ObjectId', async () => {
+    const res = await request(app).get(`/api/users/${malformedObjectId}`);
     expect(res.statusCode).toBe(400);
   });
 
-  it('PUT /users/:id - should return 404 for non-existent ObjectId', async () => {
+  it('PUT /api/users/:id - should return 404 for non-existent ObjectId', async () => {
     const res = await request(app)
-      .put(`/users/${fakeObjectId}`)
+      .put(`/api/users/${fakeObjectId}`)
       .send({ username: 'Fail' });
     expect(res.statusCode).toBe(404);
   });
 
-  it('PUT /users/:id - should return 400 for malformed ObjectId', async () => {
+  it('PUT /api/users/:id - should return 400 for malformed ObjectId', async () => {
     const res = await request(app)
-      .put(`/users/${malformedObjectId}`)
+      .put(`/api/users/${malformedObjectId}`)
       .send({ username: 'Fail' });
     expect(res.statusCode).toBe(400);
   });
 
-  it('DELETE /users/:id - should return 404 for non-existent ObjectId', async () => {
-    const res = await request(app).delete(`/users/${fakeObjectId}`);
+  it('DELETE /api/users/:id - should return 404 for non-existent ObjectId', async () => {
+    const res = await request(app).delete(`/api/users/${fakeObjectId}`);
     expect(res.statusCode).toBe(404);
   });
 
-  it('DELETE /users/:id - should return 400 for malformed ObjectId', async () => {
-    const res = await request(app).delete(`/users/${malformedObjectId}`);
+  it('DELETE /api/users/:id - should return 400 for malformed ObjectId', async () => {
+    const res = await request(app).delete(`/api/users/${malformedObjectId}`);
     expect(res.statusCode).toBe(400);
   });
 

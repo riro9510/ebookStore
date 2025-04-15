@@ -5,7 +5,7 @@ const db = require('../src/database');
 let createdBookId;
 let bulkInsertedIds = [];
 
-describe('/books routes (with DB cleanup)', () => {
+describe('/api/books routes (with DB cleanup)', () => {
   const validBook = {
     title: 'The Silent Shore',
     author: 'Elaine Morgan',
@@ -20,51 +20,51 @@ describe('/books routes (with DB cleanup)', () => {
 
   afterAll(async () => {
     if (createdBookId) {
-      await request(app).delete(`/books/${createdBookId}`);
+      await request(app).delete(`/api/books/${createdBookId}`);
     }
 
     for (const id of bulkInsertedIds) {
-      await request(app).delete(`/books/${id}`);
+      await request(app).delete(`/api/books/${id}`);
     }
 
     await db.closeConnection?.();
   });
 
-  it('POST /books - should create a new book', async () => {
-    const res = await request(app).post('/books').send(validBook);
+  it('POST /api/books - should create a new book', async () => {
+    const res = await request(app).post('/api/books').send(validBook);
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('_id');
     createdBookId = res.body._id;
   });
 
-  it('GET /books - should return an array of books', async () => {
-    const res = await request(app).get('/books');
+  it('GET /api/books - should return an array of books', async () => {
+    const res = await request(app).get('/api/books');
     expect(res.statusCode).toBe(200);
     expect(Array.isArray(res.body)).toBe(true);
   });
 
-  it('GET /books/:id - should return a single book', async () => {
-    const res = await request(app).get(`/books/${createdBookId}`);
+  it('GET /api/books/:id - should return a single book', async () => {
+    const res = await request(app).get(`/api/books/${createdBookId}`);
     expect(res.statusCode).toBe(200);
     expect(res.body).toHaveProperty('_id', createdBookId);
   });
 
-  it('PUT /books/:id - should update the book', async () => {
+  it('PUT /api/books/:id - should update the book', async () => {
     const res = await request(app)
-      .put(`/books/${createdBookId}`)
+      .put(`/api/books/${createdBookId}`)
       .send({ stock: 5 });
     expect(res.statusCode).toBe(200);
   });
 
-  it('DELETE /books/:id - should delete the book', async () => {
-    const res = await request(app).delete(`/books/${createdBookId}`);
+  it('DELETE /api/books/:id - should delete the book', async () => {
+    const res = await request(app).delete(`/api/books/${createdBookId}`);
     expect(res.statusCode).toBe(200);
     createdBookId = null;
   });
 
-  it('POST /books/bulk - should insert multiple books', async () => {
+  it('POST /api/books/bulk - should insert multiple books', async () => {
     const res = await request(app)
-      .post('/books/bulk')
+      .post('/api/books/bulk')
       .send([
         {
           title: 'Bulk Book 1',
@@ -95,13 +95,13 @@ describe('/books routes (with DB cleanup)', () => {
     bulkInsertedIds = res.body;
   });
 
-  it('GET /books/:id - should return 404 for non-existent ID', async () => {
-    const res = await request(app).get('/books/000000000000000000000000');
+  it('GET /api/books/:id - should return 404 for non-existent ID', async () => {
+    const res = await request(app).get('/api/books/000000000000000000000000');
     expect(res.statusCode).toBe(404);
   });
 
-  it('GET /books/:id - should return 400 for malformed ID', async () => {
-    const res = await request(app).get('/books/invalid-id');
+  it('GET /api/books/:id - should return 400 for malformed ID', async () => {
+    const res = await request(app).get('/api/books/invalid-id');
     expect(res.statusCode).toBe(400);
   });
 });

@@ -5,9 +5,10 @@
     "description": "ebookstore Api",
     "version": "1.0.0"
   },
-  "host": "10.0.0.100:3000",
+  "host": "ebookstore-s1o5.onrender.com",
   "basePath": "/",
   "schemes": [
+    "https",
     "http"
   ],
   "paths": {
@@ -320,6 +321,9 @@
           "400": {
             "description": "Validation error"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "500": {
             "description": "Failed to create review"
           }
@@ -380,6 +384,9 @@
           "400": {
             "description": "Invalid ID format"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Review not found"
           },
@@ -438,6 +445,9 @@
           "400": {
             "description": "Invalid ID format"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Review not found"
           },
@@ -485,6 +495,9 @@
           },
           "400": {
             "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "500": {
             "description": "Failed to add books"
@@ -558,6 +571,9 @@
               }
             }
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "404": {
             "description": "Cart not found"
           },
@@ -628,6 +644,9 @@
           },
           "400": {
             "description": "Invalid id format"
+          },
+          "401": {
+            "description": "Unauthorized"
           },
           "404": {
             "description": "Cart does not exist"
@@ -893,7 +912,7 @@
               "type": "string",
               "example": "643a6b29f3d5b8d2d8e4d531"
             },
-            "Quantity": {
+            "quantity": {
               "type": "number",
               "example": 1
             }

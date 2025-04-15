@@ -15,6 +15,7 @@ const createReview = async (req, res, next) => {
       "required": true,
       "schema": { "$ref": "#/definitions/Review" }
     }
+
     #swagger.responses[201] = {
       "description": "Review created successfully",
       "schema": { "_id": "ObjectId" }
@@ -28,8 +29,12 @@ const createReview = async (req, res, next) => {
   */
   try {
     const reviewData = req.body;
-    const newReviewId = await reviewModel.createReview(reviewData);
-    res.status(201).json({ _id: newReviewId });
+    // const newReviewId = await reviewModel.createReview(reviewData);
+    // res.status(201).json({ _id: newReviewId });
+    await reviewModel.createReview(reviewData);
+    const { bookId } = reviewData;
+
+    res.status(201).redirect(`/books/${bookId}`);
   } catch (err) {
     next(err);
   }

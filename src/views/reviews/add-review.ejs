@@ -1,8 +1,5 @@
-
-<h1><%- title %></h1>
-
 <div id="books-pages">
-    <form action="/books/add" class="ebookstore-form" method="post">
+    <form action="/reviews/add" class="ebookstore-form" method="post">
         <% for (const field in fields) { %>
             <% if (field !== '_id') { %>
              <label for="<% field %>"><%= field.charAt(0).toUpperCase() + field.slice(1) %></label>
@@ -10,6 +7,6 @@
             <br>
         <% } %>
     <% } %>
-    <button type="submit">Add Book</button>
+    <button type="submit">Add Review</button>
     </form>
 </div>

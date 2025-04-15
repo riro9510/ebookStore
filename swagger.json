@@ -5,10 +5,9 @@
     "description": "ebookstore Api",
     "version": "1.0.0"
   },
-  "host": "ebookstore-s1o5.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
-    "https",
     "http"
   ],
   "paths": {
@@ -906,15 +905,18 @@
           "example": "643a6b29f3d5b8d2d8e4d531"
         },
         "books": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "example": "643a6b29f3d5b8d2d8e4d531"
-            },
-            "quantity": {
-              "type": "number",
-              "example": 1
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "643a6b29f3d5b8d2d8e4d531"
+              },
+              "quantity": {
+                "type": "number",
+                "example": 1
+              }
             }
           }
         },

@@ -1,6 +1,7 @@
 const booksModel = require('../models/booksModel');
 const { ObjectId } = require('mongodb');
 const { validateObjectId } = require('../utilities/index');
+const { query } = require('../database');
 
 // ==============================================
 // Section: API Functions
@@ -93,6 +94,7 @@ const getSingleBook = async (req, res, next) => {
   try {
     const bookId = validateObjectId(req.params.id);
     const result = await booksModel.getBookById(bookId);
+    const reviews = await query('reviews', { bookId: `${bookId}` });
 
     if (!result) {
       const err = new Error('Book not found');
@@ -100,7 +102,11 @@ const getSingleBook = async (req, res, next) => {
       throw err;
     }
     let book = result;
-    res.status(200).json(book);
+    res.status(200).render('./books/book-detail', {
+      title: 'Book Details',
+      book,
+      reviews: reviews || null,
+    });
   } catch (err) {
     next(err);
   }
@@ -266,6 +272,7 @@ const buildBookDetailsPage = async (req, res, next) => {
   try {
     const bookId = validateObjectId(req.params.id);
     const result = await booksModel.getBookById(bookId);
+    const reviews = await query('reviews', { bookId: `${bookId}` });
 
     if (!result) {
       const err = new Error('Book not found');
@@ -276,6 +283,7 @@ const buildBookDetailsPage = async (req, res, next) => {
     res.status(200).render('./books/book-detail', {
       title: 'Book Details',
       book,
+      reviews: reviews || null,
     });
   } catch (err) {
     next(err);

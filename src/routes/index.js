@@ -13,8 +13,6 @@ router.use(
   require('./books.js')
 );
 router.use('/auth', require('./auth'));
-router.use('/cart', require('./store'));
-router.use('/review', require('./review'));
 
 router.use('/api', require('./api'));
 

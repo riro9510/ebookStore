@@ -7,14 +7,20 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "schemes": ["http"],
+  "schemes": [
+    "http"
+  ],
   "paths": {
     "/api/books/": {
       "post": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Insert a new book into the database",
         "description": "",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
@@ -79,10 +85,14 @@
     },
     "/api/books/bulk": {
       "post": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Insert multiple books into the database",
         "description": "",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
@@ -104,7 +114,9 @@
               "properties": {
                 "newBookIds": {
                   "type": "array",
-                  "example": ["ObjectId"],
+                  "example": [
+                    "ObjectId"
+                  ],
                   "items": {
                     "type": "string"
                   }
@@ -129,7 +141,9 @@
     },
     "/api/books/{id}": {
       "put": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Update a book by ID",
         "description": "",
         "parameters": [
@@ -167,7 +181,9 @@
         }
       },
       "get": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Get a book by ID",
         "description": "",
         "parameters": [
@@ -194,7 +210,9 @@
         }
       },
       "delete": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Delete a book by ID",
         "description": "",
         "parameters": [
@@ -226,7 +244,9 @@
     },
     "/api/books/update/{id}": {
       "post": {
-        "tags": ["Books"],
+        "tags": [
+          "Books"
+        ],
         "summary": "Update a book by ID",
         "description": "",
         "parameters": [
@@ -638,7 +658,9 @@
     },
     "/api/users/": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Register a user",
         "description": "",
         "parameters": [
@@ -664,7 +686,9 @@
         }
       },
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get all users in the database",
         "description": "",
         "responses": {
@@ -676,10 +700,14 @@
     },
     "/api/users/bulk": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Register multiple users",
         "description": "",
-        "produces": ["application/json"],
+        "produces": [
+          "application/json"
+        ],
         "parameters": [
           {
             "name": "body",
@@ -711,7 +739,9 @@
     },
     "/api/users/{id}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Get a user given their ID",
         "description": "",
         "parameters": [
@@ -729,7 +759,9 @@
         }
       },
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Update a user by ID",
         "description": "",
         "parameters": [
@@ -758,7 +790,9 @@
         }
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "summary": "Delete a user given their ID",
         "description": "",
         "parameters": [
@@ -810,7 +844,11 @@
         },
         "tags": {
           "type": "array",
-          "example": ["suspense", "thriller", "coastal"],
+          "example": [
+            "suspense",
+            "thriller",
+            "coastal"
+          ],
           "items": {
             "type": "string"
           }
@@ -867,15 +905,18 @@
           "example": "643a6b29f3d5b8d2d8e4d531"
         },
         "books": {
-          "type": "object",
-          "properties": {
-            "id": {
-              "type": "string",
-              "example": "643a6b29f3d5b8d2d8e4d531"
-            },
-            "quantity": {
-              "type": "number",
-              "example": 1
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "643a6b29f3d5b8d2d8e4d531"
+              },
+              "quantity": {
+                "type": "number",
+                "example": 1
+              }
             }
           }
         },

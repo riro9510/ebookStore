@@ -15,10 +15,10 @@ const cartSchema = Joi.object({
     )
     .required()
 
-    .example({
+    .example([{
       id: '643a6b29f3d5b8d2d8e4d531',
       quantity: 1,
-    }),
+    }]),
   totalPrice: Joi.number().min(0).required().example(49.98),
 });
 

@@ -2,56 +2,23 @@ const storeModel = require('../models/storeModel');
 const { ObjectId } = require('mongodb');
 const { validateObjectId } = require('../utilities/index');
 
-/**
- * Create a new cart
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * 
- * #swagger.tags = ['Cart']
- * #swagger.summary = 'Create a new shopping cart'
- * #swagger.description = 'Creates a new cart in the system with the provided cart items.'
- * #swagger.parameters['body'] = {
- *   in: 'body',
- *   required: true,
- *   schema: {
- *     type: 'object',
- *     properties: {
- *       userId: { type: 'string' },
- *       books: {
- *         type: 'object',
- *         additionalProperties: { type: 'integer' },
- *         example: {
- *           "bookId123": 1,
- *           "bookId456": 2
- *         }
- *       },
- *       totalPrice: { type: 'number' }
- *     },
- *     required: ['userId', 'books', 'totalPrice']
- *   }
- * }
- * #swagger.responses[201] = {
- *   description: 'Cart created successfully',
- *   schema: {
- *     message: 'Cart created successfully',
- *     idCart: 'ObjectId'
- *   }
- * }
- * #swagger.responses[400] = {
- *   description: 'Invalid cart data format',
- *   schema: {
- *     error: 'Invalid data provided for the cart.'
- *   }
- * }
- * #swagger.responses[500] = {
- *   description: 'Failed to create cart',
- *   schema: {
- *     error: 'Internal server error'
- *   }
- * }
- */
 async function createNewCart(req, res) {
-
+  /* 
+  #swagger.tags = ["Store"]
+  #swagger.summary = "Create a new cart"
+  #swagger.parameters['body'] = {
+    "in": "body",
+    "required": true,
+    "schema": { "$ref": "#/definitions/Cart" }
+  }
+  #swagger.responses[201] = {
+    "description": "Cart created successfully",
+    "schema": { "id": "ObjectId" }
+  }
+  #swagger.responses[500] = {
+    "description": "Failed to add books"
+  }
+  */
   try {
     const cartItems = req.body;
     const newcartId = await storeModel.creatNewCart(cartItems);
@@ -62,13 +29,27 @@ async function createNewCart(req, res) {
   }
 }
 
-/**
- * Get a single cart by ID
- * @param {import('express').Request} req
- * @param {import('express').Response} res
- * @param {import('express').NextFunction} next
- */
 const getSingleCartById = async (req, res, next) => {
+  /* 
+  #swagger.tags = ["Store"]
+  #swagger.summary = "Get a single cart by ID"
+  #swagger.parameters['id'] = {
+    "in": "path",
+    "required": true,
+    "type": "string",
+    "description": "Cart ID"
+  }
+  #swagger.responses[200] = {
+    "description": "Cart retrieved successfully",
+    "schema": { "$ref": "#/definitions/Cart" }
+  }
+  #swagger.responses[404] = {
+    "description": "Cart not found"
+  }
+  #swagger.responses[500] = {
+    "description": "Internal server error"
+  }
+  */
   try {
     const cartId = validateObjectId(req.params.id);
     const result = await storeModel.getCartById(cartId);
@@ -84,7 +65,27 @@ const getSingleCartById = async (req, res, next) => {
     next(err);
   }
 };
+
+/**
+ * Retrieves all items currently stored in the cart.
+ * Sends a 200 response with the list if found, or a 404 error if not.
+ * Forwards any internal errors to the error handler middleware.
+ */
 const getAllCart = async (req, res, next) => {
+  /* 
+    #swagger.tags = ["Store"]
+    #swagger.summary = "Retrieve all items in the cart"
+    #swagger.responses[200] = {
+      "description": "Returns a list of all cart items",
+      "schema": [{ "$ref": "#/definitions/Cart" }]
+    }
+    #swagger.responses[404] = {
+      "description": "Cart not found"
+    }
+    #swagger.responses[500] = {
+      "description": "Internal server error"
+    }
+  */
   try {
     const result = await storeModel.getAllCart();
 
@@ -99,56 +100,31 @@ const getAllCart = async (req, res, next) => {
     next(err);
   }
 };
+
+/**
+ * Updates a specific cart with new data using its ID.
+ * Returns 200 on success, 404 if not found, or 500 on error.
+ */
 async function updateCart(req, res) {
-   /* 
-    #swagger.tags = ['Cart']
-    #swagger.summary = 'Update a cart by ID'
-    #swagger.parameters['id'] = {
-      in: 'path',
-      required: true,
-      type: 'string',
-      description: 'ID of the cart to update'
-    }
+  /* 
+    #swagger.tags = ["Store"]
+    #swagger.summary = "Update a cart by ID"
     #swagger.parameters['body'] = {
-      in: 'body',
-      required: true,
-      schema: {
-        type: 'object',
-        properties: {
-          userId: { type: 'string' },
-          books: {
-            type: 'object',
-            additionalProperties: { type: 'integer' },
-            example: {
-              "bookId123": 1,
-              "bookId456": 2
-            }
-          },
-          totalPrice: { type: 'number' }
-        },
-        required: ['userId', 'books', 'totalPrice']
-      }
+      "in": "body",
+      "required": true,
+      "schema": { "$ref": "#/definitions/Cart" }
     }
     #swagger.responses[200] = {
-      description: 'Cart updated successfully',
-      schema: {
-        message: 'Cart updated.'
-      }
+      "description": "Cart updated successfully",
+      "schema": { "message": "Cart updated." }
     }
     #swagger.responses[404] = {
-      description: 'Cart not found',
-      schema: {
-        error: 'Cart not found'
-      }
+      "description": "Cart not found"
     }
     #swagger.responses[500] = {
-      description: 'Failed to update the cart',
-      schema: {
-        error: 'Failed to update the cart.'
-      }
+      "description": "Failed to update the cart"
     }
   */
-
   try {
     const { id } = req.params;
     const data = req.body;
@@ -169,43 +145,24 @@ async function updateCart(req, res) {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const deteleCart = async (req, res) => {
+const deleteCart = async (req, res) => {
   /* 
-  #swagger.tags = ['Cart']
-  #swagger.summary = 'Delete a cart by ID'
-  #swagger.description = 'Deletes a cart from the database using its ID.'
-  #swagger.parameters['id'] = {
-    in: 'path',
-    required: true,
-    type: 'string',
-    description: 'The ID of the cart to delete'
-  }
-  #swagger.responses[200] = {
-    description: 'Cart deleted successfully',
-    schema: {
-      message: 'Cart deleted'
+    #swagger.tags = ["Store"]
+    #swagger.summary = "Delete a cart by ID"
+    #swagger.responses[200] = {
+      "description": "Cart deleted successfully",
+      "schema": { "message": "Cart deleted successfully" }
     }
-  }
-  #swagger.responses[400] = {
-    description: 'Invalid ID format',
-    schema: {
-      error: 'Invalid cart ID format'
+    #swagger.responses[400] = {
+      "description": "Invalid id format"
     }
-  }
-  #swagger.responses[404] = {
-    description: 'Cart not found',
-    schema: {
-      error: 'Cart not found'
+    #swagger.responses[404] = {
+      "description": "Cart does not exist"
     }
-  }
-  #swagger.responses[500] = {
-    description: 'Failed to delete cart',
-    schema: {
-      error: 'Internal server error'
+    #swagger.responses[500] = {
+      "description": "Failed to delete cart"
     }
-  }
-*/
-
+  */
   try {
     const { id } = req.params;
     if (!ObjectId.isValid(id)) {
@@ -226,7 +183,25 @@ const deteleCart = async (req, res) => {
   }
 };
 
-const completePurchase = async (req, res) =>{
+/**
+ * Completes the purchase for a given cart ID.
+ * Returns the finalized purchase data or appropriate error response.
+ */
+const completePurchase = async (req, res) => {
+  /* 
+    #swagger.tags = ["Store"]
+    #swagger.summary = "Complete a purchase by cart ID"
+    #swagger.responses[200] = {
+      "description": "Purchase completed successfully",
+      "schema": { "$ref": "#/definitions/Purchase" }
+    }
+    #swagger.responses[400] = {
+      "description": "Invalid id format"
+    }
+    #swagger.responses[500] = {
+      "description": "Failed to complete the purchase"
+    }
+  */
   try {
     const { id } = req.params;
     if (!ObjectId.isValid(id)) {
@@ -241,12 +216,13 @@ const completePurchase = async (req, res) =>{
     console.error('Error completing purchase', err);
     res.status(500).json({ error: 'Failed to complete the purchase' });
   }
-}
+};
+
 module.exports = {
   createNewCart,
   getAllCart,
   getSingleCartById,
   updateCart,
-  deteleCart,
-  completePurchase
+  deleteCart,
+  completePurchase,
 };

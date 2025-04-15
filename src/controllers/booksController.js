@@ -226,6 +226,7 @@ const deleteBook = async (req, res) => {
  * @param {import('express').Response} res
  */
 async function buildBooksForm(req, res) {
+  // #swagger.ignore = true
   const { id } = req.params || '';
   const formData = await booksModel.buildBooksForm(id);
   if (id) {

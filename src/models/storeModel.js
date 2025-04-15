@@ -1,11 +1,4 @@
-const {
-  insertMultipleItems,
-  getFormData,
-  deleteById,
-  query,
-  updateById,
-  insertItem,
-} = require('../database/');
+const { deleteById, query, updateById, insertItem } = require('../database/');
 /**
  * Creates a new cart (order) and inserts it into the 'order' collection.
  * @param {Object} orderData - The order object to insert
@@ -28,19 +21,20 @@ async function getAllCart() {
   return results;
 }
 
-
 function deleteCartById(id) {
   return deleteById('order', id);
 }
 
 async function completePurchase(cartId) {
   try {
-    const cart = await getCartById(cartId); 
-    const booksInCart = cart.books;  
+    const cart = await getCartById(cartId);
+    const booksInCart = cart.books;
 
-    const bookPromises = Object.entries(booksInCart).map(([bookId, quantity]) => {
-      return query('books', { _id: bookId });
-    });
+    const bookPromises = Object.entries(booksInCart).map(
+      ([bookId, quantity]) => {
+        return query('books', { _id: bookId });
+      }
+    );
 
     const books = await Promise.all(bookPromises);
 
@@ -53,20 +47,22 @@ async function completePurchase(cartId) {
 
     await Promise.all(updateBookPromises);
 
-    await deleteCart(cartId);
+    deleteCartById(cartId);
 
     return { message: 'Purchase completed successfully' };
-
   } catch (error) {
     console.error('Error completing purchase:', error);
     throw new Error('Failed to complete the purchase');
   }
 }
 async function updateBookStock(bookId, quantityChange) {
-  const result = await query('books', { _id: bookId }, { $inc: { stock: quantityChange } });
+  const result = await query(
+    'books',
+    { _id: bookId },
+    { $inc: { stock: quantityChange } }
+  );
   return result;
 }
-
 
 async function updateCart(id, data) {
   const result = await updateById('order', id, data);
@@ -79,5 +75,5 @@ module.exports = {
   updateCart,
   getCartById,
   deleteCartById,
-  completePurchase
+  completePurchase,
 };

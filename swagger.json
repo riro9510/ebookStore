@@ -5,53 +5,12 @@
     "description": "ebookstore Api",
     "version": "1.0.0"
   },
-  "host": "ebookstore-s1o5.onrender.com",
+  "host": "10.0.0.100:3000",
   "basePath": "/",
   "schemes": [
-    "https",
     "http"
   ],
   "paths": {
-    "/github/callback": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/login": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/logout": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/books/add": {
       "post": {
         "tags": [
@@ -96,14 +55,6 @@
           },
           "500": {
             "description": "Internal server error"
-          }
-        }
-      },
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
           }
         }
       }
@@ -307,22 +258,6 @@
             "description": "Failed to update book"
           }
         }
-      },
-      "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
       }
     },
     "/books/": {
@@ -508,49 +443,74 @@
         }
       }
     },
-    "/auth/github": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
-    "/auth/github/callback": {
-      "get": {
-        "description": "",
-        "responses": {
-          "default": {
-            "description": ""
-          }
-        }
-      }
-    },
     "/cart/": {
       "post": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Create a new cart",
         "description": "",
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Cart"
+            }
+          }
+        ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Cart created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "example": "ObjectId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
             "description": "Bad Request"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Failed to add books"
           }
         }
       },
       "get": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Retrieve all items in the cart",
         "description": "",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Returns a list of all cart items",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Cart"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Internal server error"
           }
         }
       }
@@ -558,7 +518,7 @@
     "/cart/{id}": {
       "put": {
         "tags": [
-          "Cart"
+          "Store"
         ],
         "summary": "Update a cart by ID",
         "description": "",
@@ -567,86 +527,14 @@
             "name": "id",
             "in": "path",
             "required": true,
-            "type": "string",
-            "description": "ID of the cart to update"
+            "type": "string"
           },
           {
             "name": "body",
             "in": "body",
             "required": true,
             "schema": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "example": "object"
-                },
-                "properties": {
-                  "type": "object",
-                  "properties": {
-                    "userId": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "type": "string",
-                          "example": "string"
-                        }
-                      }
-                    },
-                    "books": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "type": "string",
-                          "example": "object"
-                        },
-                        "additionalProperties": {
-                          "type": "object",
-                          "properties": {
-                            "type": {
-                              "type": "string",
-                              "example": "integer"
-                            }
-                          }
-                        },
-                        "example": {
-                          "type": "object",
-                          "properties": {
-                            "bookId123": {
-                              "type": "number",
-                              "example": 1
-                            },
-                            "bookId456": {
-                              "type": "number",
-                              "example": 2
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "totalPrice": {
-                      "type": "object",
-                      "properties": {
-                        "type": {
-                          "type": "string",
-                          "example": "number"
-                        }
-                      }
-                    }
-                  }
-                },
-                "required": {
-                  "type": "array",
-                  "example": [
-                    "userId",
-                    "books",
-                    "totalPrice"
-                  ],
-                  "items": {
-                    "type": "string"
-                  }
-                }
-              }
+              "$ref": "#/definitions/Cart"
             }
           }
         ],
@@ -667,88 +555,84 @@
             }
           },
           "404": {
-            "description": "Cart not found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Cart not found"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Cart not found"
           },
           "500": {
-            "description": "Failed to update the cart",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Failed to update the cart."
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Failed to update the cart"
           }
         }
       },
       "get": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
-      "post": {
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "500": {
-            "description": "Internal Server Error"
-          }
-        }
-      },
-      "delete": {
         "tags": [
-          "Cart"
+          "Store"
         ],
-        "summary": "Delete a cart by ID",
-        "description": "Deletes a cart from the database using its ID.",
+        "summary": "Get a single cart by ID",
+        "description": "",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
-            "description": "The ID of the cart to delete"
+            "description": "Cart ID"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cart retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Cart"
+            }
+          },
+          "404": {
+            "description": "Cart not found"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Complete a purchase by cart ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Purchase completed successfully",
+            "schema": {
+              "$ref": "#/definitions/Purchase"
+            }
+          },
+          "400": {
+            "description": "Invalid id format"
+          },
+          "500": {
+            "description": "Failed to complete the purchase"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Store"
+        ],
+        "summary": "Delete a cart by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {
@@ -759,7 +643,7 @@
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Cart deleted"
+                  "example": "Cart deleted successfully"
                 }
               },
               "xml": {
@@ -768,82 +652,93 @@
             }
           },
           "400": {
-            "description": "Invalid ID format",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Invalid cart ID format"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Invalid id format"
           },
           "404": {
-            "description": "Cart not found",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Cart not found"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Cart does not exist"
           },
           "500": {
-            "description": "Failed to delete cart",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "error": {
-                  "type": "string",
-                  "example": "Internal server error"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Failed to delete cart"
           }
         }
       }
     },
     "/review/": {
       "post": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Create a new review",
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
+          }
+        ],
         "responses": {
           "201": {
-            "description": "Created"
+            "description": "Review created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Review created successfully"
+                },
+                "id": {
+                  "type": "string",
+                  "example": "ObjectId"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Validation error"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Failed to create review"
           }
         }
       },
       "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Get all reviews",
         "description": "",
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Reviews retrieved successfully",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Review"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Failed to retrieve reviews"
           }
         }
       }
     },
     "/review/{id}": {
       "put": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Update a review by ID",
         "description": "",
         "parameters": [
           {
@@ -851,24 +746,48 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
           }
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Review updated successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Review updated successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Invalid ID format"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Review not found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Failed to update review"
           }
         }
       },
       "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Get a single review by ID",
         "description": "",
         "parameters": [
           {
@@ -880,17 +799,24 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Review retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Review not found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Failed to retrieve review"
           }
         }
       },
       "delete": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Delete a review by ID",
         "description": "",
         "parameters": [
           {
@@ -902,16 +828,28 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Review deleted successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Review deleted successfully"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Invalid ID format"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Review not found"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Failed to delete review"
           }
         }
       }

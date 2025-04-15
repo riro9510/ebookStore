@@ -66,7 +66,6 @@ app.use((req, res, next) => {
   next();
 });
 
-
 // VIEW ENGINE / TEMPLATES
 app.use(express.static('src/public'));
 app.set('view engine', 'ejs');

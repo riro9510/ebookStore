@@ -7,11 +7,14 @@ router.use('/', require('./swagger'));
 
 // Mount routes
 router.use('/', require('./swagger'));
-router.use('/books', require('./books'));
-router.use('/users', require('./users'));
+router.use(
+  // #swagger.ignore = true
+  '/books',
+  require('./books.js')
+);
 router.use('/auth', require('./auth'));
-router.use('/cart', require('./store'));
-router.use('/review', require('./review'));
+
+router.use('/api', require('./api'));
 
 router.get(
   // #swagger.ignore = true

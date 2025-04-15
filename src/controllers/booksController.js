@@ -2,6 +2,10 @@ const booksModel = require('../models/booksModel');
 const { ObjectId } = require('mongodb');
 const { validateObjectId } = require('../utilities/index');
 
+// ==============================================
+// Section: API Functions
+// ===============================================
+
 /**
  * Insert multiple books from an array in request body
  * @param {import('express').Request} req
@@ -96,10 +100,7 @@ const getSingleBook = async (req, res, next) => {
       throw err;
     }
     let book = result;
-    res.status(200).render('./books/book-detail', {
-      title: 'Book Details',
-      book,
-    });
+    res.status(200).json(book);
   } catch (err) {
     next(err);
   }
@@ -130,10 +131,7 @@ const getAllBooks = async (req, res, next) => {
       err.status = 404;
       throw err;
     }
-    res.status(200).render('./books/books-list', {
-      books,
-      title: 'Book List',
-    });
+    res.status(200).json(books);
   } catch (err) {
     next(err);
   }
@@ -220,6 +218,10 @@ const deleteBook = async (req, res) => {
   }
 };
 
+// ==============================================
+// Section: Rendering Functions
+// ===============================================
+
 /**
  * Render the update-book form with prefilled data
  * @param {import('express').Request} req
@@ -242,6 +244,44 @@ async function buildBooksForm(req, res) {
   }
 }
 
+const buildBooksListPage = async (req, res, next) => {
+  try {
+    const books = await booksModel.getAllBooks();
+
+    if (books.length === 0) {
+      const err = new Error('No books found');
+      err.status = 404;
+      throw err;
+    }
+    res.status(200).render('./books/books-list', {
+      books,
+      title: 'Book List',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const buildBookDetailsPage = async (req, res, next) => {
+  try {
+    const bookId = validateObjectId(req.params.id);
+    const result = await booksModel.getBookById(bookId);
+
+    if (!result) {
+      const err = new Error('Book not found');
+      err.status = 404;
+      throw err;
+    }
+    let book = result;
+    res.status(200).render('./books/book-detail', {
+      title: 'Book Details',
+      book,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 module.exports = {
   insertMultipleBooks,
   insertBook,
@@ -250,4 +290,6 @@ module.exports = {
   updateBook,
   deleteBook,
   buildBooksForm,
+  buildBooksListPage,
+  buildBookDetailsPage,
 };

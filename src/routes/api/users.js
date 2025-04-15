@@ -1,11 +1,11 @@
 const router = require('express').Router();
-const usersController = require('../controllers/usersController');
-const { validateJoiSchema } = require('../middleware/validator');
-const { isAuthenticated } = require('../middleware/authenticate');
+const usersController = require('../../controllers/usersController');
+const { validateJoiSchema } = require('../../middleware/validator');
+const { isAuthenticated } = require('../../middleware/authenticate');
 const {
   registerUserSchema,
   registerManyUsersSchema,
-} = require('../schemas/usersSchema');
+} = require('../../schemas/usersSchema');
 
 // Create users
 router.post(

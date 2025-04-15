@@ -11,7 +11,7 @@
     "http"
   ],
   "paths": {
-    "/books/add": {
+    "/api/books/": {
       "post": {
         "tags": [
           "Books"
@@ -57,9 +57,33 @@
             "description": "Internal server error"
           }
         }
+      },
+      "get": {
+        "tags": [
+          "Books"
+        ],
+        "summary": "Get all books in the database",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "List of books",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Books"
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
+          },
+          "404": {
+            "description": "No books found"
+          }
+        }
       }
     },
-    "/books/bulk": {
+    "/api/books/bulk": {
       "post": {
         "tags": [
           "Books"
@@ -115,7 +139,7 @@
         }
       }
     },
-    "/books/{id}": {
+    "/api/books/{id}": {
       "put": {
         "tags": [
           "Books"
@@ -218,7 +242,7 @@
         }
       }
     },
-    "/books/update/{id}": {
+    "/api/books/update/{id}": {
       "post": {
         "tags": [
           "Books"
@@ -260,139 +284,78 @@
         }
       }
     },
-    "/books/": {
-      "get": {
+    "/api/reviews/": {
+      "post": {
         "tags": [
-          "Books"
+          "Reviews"
         ],
-        "summary": "Get all books in the database",
+        "summary": "Create a new review",
         "description": "",
-        "responses": {
-          "200": {
-            "description": "List of books",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
             "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Books"
+              "$ref": "#/definitions/Review"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Review created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string",
+                  "example": "ObjectId"
+                }
               },
               "xml": {
                 "name": "main"
               }
             }
           },
-          "404": {
-            "description": "No books found"
-          }
-        }
-      }
-    },
-    "/users/": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Register a user",
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Users"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
           "400": {
-            "description": "Bad Request"
+            "description": "Validation error"
           },
-          "401": {
-            "description": "Unauthorized"
+          "500": {
+            "description": "Failed to create review"
           }
         }
       },
       "get": {
         "tags": [
-          "Users"
+          "Reviews"
         ],
-        "summary": "Get all users in the database",
+        "summary": "Get all reviews",
         "description": "",
         "responses": {
           "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/users/bulk": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Register multiple users",
-        "description": "",
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
+            "description": "Reviews retrieved successfully",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Users"
+                "$ref": "#/definitions/Review"
+              },
+              "xml": {
+                "name": "main"
               }
             }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "Created"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "401": {
-            "description": "Unauthorized"
           },
           "500": {
-            "description": "Internal Server Error"
+            "description": "Failed to retrieve reviews"
           }
         }
       }
     },
-    "/users/{id}": {
-      "get": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Get a user given their ID",
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      },
+    "/api/reviews/{id}": {
       "put": {
         "tags": [
-          "Users"
+          "Reviews"
         ],
-        "summary": "Update a user by ID",
+        "summary": "Update a review by ID",
         "description": "",
         "parameters": [
           {
@@ -406,24 +369,59 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Users"
+              "$ref": "#/definitions/Review"
             }
           }
         ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Review updated successfully"
           },
-          "401": {
-            "description": "Unauthorized"
+          "400": {
+            "description": "Invalid ID format"
+          },
+          "404": {
+            "description": "Review not found"
+          },
+          "500": {
+            "description": "Failed to update review"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Reviews"
+        ],
+        "summary": "Get a single review by ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review retrieved successfully",
+            "schema": {
+              "$ref": "#/definitions/Review"
+            }
+          },
+          "404": {
+            "description": "Review not found"
+          },
+          "500": {
+            "description": "Failed to retrieve review"
           }
         }
       },
       "delete": {
         "tags": [
-          "Users"
+          "Reviews"
         ],
-        "summary": "Delete a user given their ID",
+        "summary": "Delete a review by ID",
         "description": "",
         "parameters": [
           {
@@ -435,15 +433,21 @@
         ],
         "responses": {
           "204": {
-            "description": "No Content"
+            "description": "Review deleted successfully"
           },
-          "401": {
-            "description": "Unauthorized"
+          "400": {
+            "description": "Invalid ID format"
+          },
+          "404": {
+            "description": "Review not found"
+          },
+          "500": {
+            "description": "Failed to delete review"
           }
         }
       }
     },
-    "/cart/": {
+    "/api/cart/": {
       "post": {
         "tags": [
           "Store"
@@ -515,7 +519,7 @@
         }
       }
     },
-    "/cart/{id}": {
+    "/api/cart/{id}": {
       "put": {
         "tags": [
           "Store"
@@ -592,35 +596,6 @@
           }
         }
       },
-      "post": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Complete a purchase by cart ID",
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Purchase completed successfully",
-            "schema": {
-              "$ref": "#/definitions/Purchase"
-            }
-          },
-          "400": {
-            "description": "Invalid id format"
-          },
-          "500": {
-            "description": "Failed to complete the purchase"
-          }
-        }
-      },
       "delete": {
         "tags": [
           "Store"
@@ -663,12 +638,12 @@
         }
       }
     },
-    "/review/": {
+    "/api/users/": {
       "post": {
         "tags": [
-          "Reviews"
+          "Users"
         ],
-        "summary": "Create a new review",
+        "summary": "Register a user",
         "description": "",
         "parameters": [
           {
@@ -676,69 +651,100 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Review"
+              "$ref": "#/definitions/Users"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Review created successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Review created successfully"
-                },
-                "id": {
-                  "type": "string",
-                  "example": "ObjectId"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+            "description": "Created"
           },
           "400": {
-            "description": "Validation error"
+            "description": "Bad Request"
           },
-          "500": {
-            "description": "Failed to create review"
+          "401": {
+            "description": "Unauthorized"
           }
         }
       },
       "get": {
         "tags": [
-          "Reviews"
+          "Users"
         ],
-        "summary": "Get all reviews",
+        "summary": "Get all users in the database",
         "description": "",
         "responses": {
           "200": {
-            "description": "Reviews retrieved successfully",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Review"
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
-          },
-          "500": {
-            "description": "Failed to retrieve reviews"
+            "description": "OK"
           }
         }
       }
     },
-    "/review/{id}": {
+    "/api/users/bulk": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Register multiple users",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Users"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/users/{id}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "summary": "Get a user given their ID",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
       "put": {
         "tags": [
-          "Reviews"
+          "Users"
         ],
-        "summary": "Update a review by ID",
+        "summary": "Update a user by ID",
         "description": "",
         "parameters": [
           {
@@ -752,71 +758,24 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Review"
+              "$ref": "#/definitions/Users"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Review updated successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Review updated successfully"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+          "204": {
+            "description": "No Content"
           },
-          "400": {
-            "description": "Invalid ID format"
-          },
-          "404": {
-            "description": "Review not found"
-          },
-          "500": {
-            "description": "Failed to update review"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Reviews"
-        ],
-        "summary": "Get a single review by ID",
-        "description": "",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Review retrieved successfully",
-            "schema": {
-              "$ref": "#/definitions/Review"
-            }
-          },
-          "404": {
-            "description": "Review not found"
-          },
-          "500": {
-            "description": "Failed to retrieve review"
+          "401": {
+            "description": "Unauthorized"
           }
         }
       },
       "delete": {
         "tags": [
-          "Reviews"
+          "Users"
         ],
-        "summary": "Delete a review by ID",
+        "summary": "Delete a user given their ID",
         "description": "",
         "parameters": [
           {
@@ -827,29 +786,11 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Review deleted successfully",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "message": {
-                  "type": "string",
-                  "example": "Review deleted successfully"
-                }
-              },
-              "xml": {
-                "name": "main"
-              }
-            }
+          "204": {
+            "description": "No Content"
           },
-          "400": {
-            "description": "Invalid ID format"
-          },
-          "404": {
-            "description": "Review not found"
-          },
-          "500": {
-            "description": "Failed to delete review"
+          "401": {
+            "description": "Unauthorized"
           }
         }
       }
@@ -952,7 +893,7 @@
               "type": "string",
               "example": "643a6b29f3d5b8d2d8e4d531"
             },
-            "quantity": {
+            "Quantity": {
               "type": "number",
               "example": 1
             }

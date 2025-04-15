@@ -1,7 +1,7 @@
 const router = require('express').Router();
-const reviewController = require('../controllers/reviewController');
-const { validateJoiSchema } = require('../middleware/validator');
-const { reviewSchema } = require('../schemas/reviewSchema');
+const reviewController = require('../../controllers/reviewController');
+const { validateJoiSchema } = require('../../middleware/validator');
+const { reviewSchema } = require('../../schemas/reviewSchema');
 
 router.post(
   '/',

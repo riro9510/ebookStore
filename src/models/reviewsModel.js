@@ -49,7 +49,7 @@ async function updateReviewById(id, data) {
  */
 async function deleteReviewById(id) {
   const result = await deleteById('reviews', id);
-  return result.deletedCount;
+  return result;
 }
 
 module.exports = {

@@ -1,6 +1,4 @@
 const reviewModel = require('../models/reviewsModel');
-const { reviewSchema } = require('../schemas/reviewSchema');
-const { ObjectId } = require('mongodb');
 const { validateObjectId } = require('../utilities/index');
 
 /**
@@ -8,7 +6,7 @@ const { validateObjectId } = require('../utilities/index');
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const createReview = async (req, res) => {
+const createReview = async (req, res, next) => {
   /* 
     #swagger.tags = ["Reviews"]
     #swagger.summary = "Create a new review"
@@ -19,7 +17,7 @@ const createReview = async (req, res) => {
     }
     #swagger.responses[201] = {
       "description": "Review created successfully",
-      "schema": { "message": "Review created successfully", "id": "ObjectId" }
+      "schema": { "_id": "ObjectId" }
     }
     #swagger.responses[400] = {
       "description": "Validation error"
@@ -29,19 +27,11 @@ const createReview = async (req, res) => {
     }
   */
   try {
-    const { error, value } = reviewSchema.validate(req.body);
-
-    if (error) {
-      return res.status(400).json({ error: error.details[0].message });
-    }
-
-    const insertedId = await reviewModel.createReview(value);
-    res
-      .status(201)
-      .json({ message: 'Review created successfully', id: insertedId });
+    const reviewData = req.body;
+    const newReviewId = await reviewModel.createReview(reviewData);
+    res.status(201).json({ _id: newReviewId });
   } catch (err) {
-    console.error('Error creating review:', err);
-    res.status(500).json({ error: 'Failed to create review' });
+    next(err);
   }
 };
 
@@ -50,7 +40,7 @@ const createReview = async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const getReviewById = async (req, res) => {
+const getReviewById = async (req, res, next) => {
   /* 
     #swagger.tags = ["Reviews"]
     #swagger.summary = "Get a single review by ID"
@@ -70,13 +60,14 @@ const getReviewById = async (req, res) => {
     const review = await reviewModel.getReviewById(reviewId);
 
     if (!review) {
-      return res.status(404).json({ error: 'Review not found' });
+      const err = new Error('Review not found');
+      err.status = 404;
+      throw err;
     }
 
     res.status(200).json(review);
   } catch (err) {
-    console.error('Error fetching review:', err);
-    res.status(500).json({ error: 'Failed to retrieve review' });
+    next(err);
   }
 };
 
@@ -111,7 +102,7 @@ const getAllReviews = async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const updateReview = async (req, res) => {
+const updateReview = async (req, res, next) => {
   /* 
     #swagger.tags = ["Reviews"]
     #swagger.summary = "Update a review by ID"
@@ -120,9 +111,8 @@ const updateReview = async (req, res) => {
       "required": true,
       "schema": { "$ref": "#/definitions/Review" }
     }
-    #swagger.responses[200] = {
+    #swagger.responses[204] = {
       "description": "Review updated successfully",
-      "schema": { "message": "Review updated successfully" }
     }
     #swagger.responses[400] = {
       "description": "Invalid ID format"
@@ -135,22 +125,18 @@ const updateReview = async (req, res) => {
     }
   */
   try {
-    const { id } = req.params;
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: 'Invalid ID format' });
+    const reviewId = validateObjectId(req.params.id);
+    const success = await reviewModel.updateReviewById(reviewId, req.body);
+
+    if (!success) {
+      const err = new Error('Review not found');
+      err.status = 404;
+      throw err;
     }
 
-    const updateData = req.body;
-    const result = await reviewModel.updateReviewById(id, updateData);
-
-    if (result === 0) {
-      return res.status(404).json({ error: 'Review not found' });
-    }
-
-    res.status(200).json({ message: 'Review updated successfully' });
+    res.status(204).end();
   } catch (err) {
-    console.error('Error updating review:', err);
-    res.status(500).json({ error: 'Failed to update review' });
+    next(err);
   }
 };
 
@@ -159,13 +145,12 @@ const updateReview = async (req, res) => {
  * @param {import('express').Request} req
  * @param {import('express').Response} res
  */
-const deleteReview = async (req, res) => {
+const deleteReview = async (req, res, next) => {
   /* 
     #swagger.tags = ["Reviews"]
     #swagger.summary = "Delete a review by ID"
-    #swagger.responses[200] = {
+    #swagger.responses[204] = {
       "description": "Review deleted successfully",
-      "schema": { "message": "Review deleted successfully" }
     }
     #swagger.responses[400] = {
       "description": "Invalid ID format"
@@ -178,21 +163,19 @@ const deleteReview = async (req, res) => {
     }
   */
   try {
-    const { id } = req.params;
-    if (!ObjectId.isValid(id)) {
-      return res.status(400).json({ error: 'Invalid ID format' });
+    const reviewId = validateObjectId(req.params.id);
+
+    const success = await reviewModel.deleteReviewById(reviewId);
+
+    if (!success) {
+      const err = new Error('Review not found');
+      err.status = 404;
+      throw err;
     }
 
-    const deletedCount = await reviewModel.deleteReviewById(id);
-
-    if (!deletedCount) {
-      return res.status(404).json({ error: 'Review not found' });
-    }
-
-    res.status(200).json({ message: 'Review deleted successfully' });
+    res.status(204).end();
   } catch (err) {
-    console.error('Error deleting review:', err);
-    res.status(500).json({ error: 'Failed to delete review' });
+    next(err);
   }
 };
 

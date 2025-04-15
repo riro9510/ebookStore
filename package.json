@@ -23,10 +23,12 @@
   },
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "node swagger && nodemon index.js",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "test": "jest"
+    "test": "jest",
+    "build-swagger": "node swagger.js",
+    "start": "npm run build-swagger && node index.js"
   },
   "repository": {
     "type": "git",

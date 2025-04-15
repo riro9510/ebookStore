@@ -7,9 +7,7 @@
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/github/callback": {
       "get": {
@@ -53,14 +51,10 @@
     },
     "/books/add": {
       "post": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Insert a new book into the database",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "body",
@@ -109,14 +103,10 @@
     },
     "/books/bulk": {
       "post": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Insert multiple books into the database",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "body",
@@ -138,9 +128,7 @@
               "properties": {
                 "newBookIds": {
                   "type": "array",
-                  "example": [
-                    "ObjectId"
-                  ],
+                  "example": ["ObjectId"],
                   "items": {
                     "type": "string"
                   }
@@ -165,9 +153,7 @@
     },
     "/books/{id}": {
       "put": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Update a book by ID",
         "description": "",
         "parameters": [
@@ -205,9 +191,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Get a book by ID",
         "description": "",
         "parameters": [
@@ -234,9 +218,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Delete a book by ID",
         "description": "",
         "parameters": [
@@ -268,9 +250,7 @@
     },
     "/books/update/{id}": {
       "post": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Update a book by ID",
         "description": "",
         "parameters": [
@@ -326,9 +306,7 @@
     },
     "/books/": {
       "get": {
-        "tags": [
-          "Books"
-        ],
+        "tags": ["Books"],
         "summary": "Get all books in the database",
         "description": "",
         "responses": {
@@ -352,9 +330,7 @@
     },
     "/users/": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Register a user",
         "description": "",
         "parameters": [
@@ -380,9 +356,7 @@
         }
       },
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Get all users in the database",
         "description": "",
         "responses": {
@@ -394,14 +368,10 @@
     },
     "/users/bulk": {
       "post": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Register multiple users",
         "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "parameters": [
           {
             "name": "body",
@@ -433,9 +403,7 @@
     },
     "/users/{id}": {
       "get": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Get a user given their ID",
         "description": "",
         "parameters": [
@@ -453,9 +421,7 @@
         }
       },
       "put": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Update a user by ID",
         "description": "",
         "parameters": [
@@ -484,9 +450,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Users"
-        ],
+        "tags": ["Users"],
         "summary": "Delete a user given their ID",
         "description": "",
         "parameters": [
@@ -530,9 +494,7 @@
     "/cart/": {
       "post": {
         "description": "",
-        "produces": [
-          "application/json"
-        ],
+        "produces": ["application/json"],
         "responses": {
           "201": {
             "description": "Created"
@@ -556,9 +518,7 @@
     },
     "/cart/{id}": {
       "put": {
-        "tags": [
-          "Cart"
-        ],
+        "tags": ["Cart"],
         "summary": "Update a cart by ID",
         "description": "",
         "parameters": [
@@ -636,11 +596,7 @@
                 },
                 "required": {
                   "type": "array",
-                  "example": [
-                    "userId",
-                    "books",
-                    "totalPrice"
-                  ],
+                  "example": ["userId", "books", "totalPrice"],
                   "items": {
                     "type": "string"
                   }
@@ -736,9 +692,7 @@
         }
       },
       "delete": {
-        "tags": [
-          "Cart"
-        ],
+        "tags": ["Cart"],
         "summary": "Delete a cart by ID",
         "description": "Deletes a cart from the database using its ID.",
         "parameters": [
@@ -946,11 +900,7 @@
         },
         "tags": {
           "type": "array",
-          "example": [
-            "suspense",
-            "thriller",
-            "coastal"
-          ],
+          "example": ["suspense", "thriller", "coastal"],
           "items": {
             "type": "string"
           }

@@ -38,16 +38,16 @@
         </li>
       <% }) %>
       </ul> 
-      <% if (!user) { %> 
+      <% if (user) { %> 
         <a href="#" id="show-review-form">Leave a Review</a>
         <% } %>
       <% } else { %>
-        <p>No Current Reviews <% if (!user) { %> 
+        <p>No Current Reviews <% if (user) { %> 
           -- <a href="#" id="show-review-form">Leave First Review</a>
           <% } %>
         </p>
         <% } %>
-        <% if (!user) { %>
+        <% if (user) { %>
           <!-- Hidden Review Form -->
           <div id="add-review-form" style="display: none;">
             <h3>Leave a Review</h3>

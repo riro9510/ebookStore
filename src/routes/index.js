@@ -7,46 +7,43 @@ router.use('/', require('./swagger'));
 
 // Mount routes
 router.use('/', require('./swagger'));
-router.use('/books', require('./books'));
-router.use('/users', require('./users'));
+router.use(
+  // #swagger.ignore = true
+  '/books',
+  require('./books.js')
+);
 router.use('/auth', require('./auth'));
 router.use('/cart', require('./store'));
 router.use('/review', require('./review'));
 
-// router.get('/',
-//   // #swagger.ignore = true
-//   baseController.buildHome)
+router.use('/api', require('./api'));
 
 router.get(
+  // #swagger.ignore = true
   '/github/callback',
   passport.authenticate('github', { failureRedirect: '/' })
   // githubCallback
 );
+
 // Login page
-router.get('/login', (req, res) => {
-  res.redirect('/auth/github');
-});
+router.get(
+  // #swagger.ignore = true
+  '/login',
+  (req, res) => {
+    res.redirect('/auth/github');
+  }
+);
 
 // Home page
 router.get(
+  // #swagger.ignore = true
   '/',
-  // (req, res) => {
-  // console.log('user:', req.user);
-  // console.log('session:', req.session);
-  // const loggedStatus =
-  //   req.user !== undefined
-  //     ? `Logged in as ${req.user.displayName}`
-  //     : 'Logged out';
-
-  // res.send(`
-  //   <p>${loggedStatus}</p>
-  //   <a href="/api-docs/">Click here to go to the API documentation</a>
-  // `)},
   baseController.buildHome
 );
 
 // Logout
 router.get('/logout', function (req, res, next) {
+  // #swagger.ignore = true
   req.logOut(function (err) {
     if (err) {
       return next(err);

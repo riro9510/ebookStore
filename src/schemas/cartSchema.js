@@ -6,15 +6,19 @@ const Joi = require('joi');
  */
 const cartSchema = Joi.object({
   userId: Joi.string().required().example('643a6b29f3d5b8d2d8e4d531'),
-  books: Joi.object({
-    id: Joi.string().required().example('643a6b29f3d5b8d2d8e4d531'),
-    quantity: Joi.number().integer().min(1).required().example(1),
-  })
+  books: Joi.array()
+    .items(
+      Joi.object({
+        id: Joi.string().required(),
+        quantity: Joi.number().integer().min(1).required(),
+      })
+    )
     .required()
-    .example({
+
+    .example([{
       id: '643a6b29f3d5b8d2d8e4d531',
-      Quantity: 1,
-    }),
+      quantity: 1,
+    }]),
   totalPrice: Joi.number().min(0).required().example(49.98),
 });
 

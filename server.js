@@ -62,10 +62,9 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use((req, res, next) => {
-  res.locals.user = req.user || undefined; // Attach user to locals for all views
+  res.locals.user = req.user || null; // Attach user to locals for all views
   next();
 });
-
 
 // VIEW ENGINE / TEMPLATES
 app.use(express.static('src/public'));

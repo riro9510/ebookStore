@@ -7,7 +7,7 @@ const { validateObjectId } = require('../utilities/index');
  * Create a new review
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * 
+ *
  * #swagger.tags = ['Review']
  * #swagger.summary = 'Create a new book review'
  * #swagger.description = 'Creates a new review in the system with the provided review data.'
@@ -53,9 +53,10 @@ const createReview = async (req, res) => {
     if (error) {
       return res.status(400).json({ error: error.details[0].message });
     }
+    await reviewModel.createReview(value);
+    const { bookId } = value;
 
-    const insertedId = await reviewModel.createReview(value);
-    res.status(201).json({ message: 'Review created successfully', id: insertedId });
+    res.status(201).redirect(`/books/${bookId}`);
   } catch (err) {
     console.error('Error creating review:', err);
     res.status(500).json({ error: 'Failed to create review' });

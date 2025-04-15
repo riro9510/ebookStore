@@ -6,7 +6,7 @@ const { validateObjectId } = require('../utilities/index');
  * Create a new cart
  * @param {import('express').Request} req
  * @param {import('express').Response} res
- * 
+ *
  * #swagger.tags = ['Cart']
  * #swagger.summary = 'Create a new shopping cart'
  * #swagger.description = 'Creates a new cart in the system with the provided cart items.'
@@ -51,7 +51,6 @@ const { validateObjectId } = require('../utilities/index');
  * }
  */
 async function createNewCart(req, res) {
-
   try {
     const cartItems = req.body;
     const newcartId = await storeModel.creatNewCart(cartItems);
@@ -100,7 +99,7 @@ const getAllCart = async (req, res, next) => {
   }
 };
 async function updateCart(req, res) {
-   /* 
+  /* 
     #swagger.tags = ['Cart']
     #swagger.summary = 'Update a cart by ID'
     #swagger.parameters['id'] = {
@@ -226,7 +225,7 @@ const deteleCart = async (req, res) => {
   }
 };
 
-const completePurchase = async (req, res) =>{
+const completePurchase = async (req, res) => {
   try {
     const { id } = req.params;
     if (!ObjectId.isValid(id)) {
@@ -241,12 +240,12 @@ const completePurchase = async (req, res) =>{
     console.error('Error completing purchase', err);
     res.status(500).json({ error: 'Failed to complete the purchase' });
   }
-}
+};
 module.exports = {
   createNewCart,
   getAllCart,
   getSingleCartById,
   updateCart,
   deteleCart,
-  completePurchase
+  completePurchase,
 };

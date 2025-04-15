@@ -5,10 +5,9 @@
     "description": "ebookstore Api",
     "version": "1.0.0"
   },
-  "host": "ebookstore-s1o5.onrender.com",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
-    "https",
     "http"
   ],
   "paths": {

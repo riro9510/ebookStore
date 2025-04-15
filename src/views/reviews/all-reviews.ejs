@@ -1,0 +1,12 @@
+<div id="books-pages">
+    <h1><%- title  %></h1>
+  <% if (reviews.length > 0) { %>
+   <ul id="books-list">
+      <% reviews.forEach(review => { %>
+        <li><strong><%= review.title %></strong> by: <%= review.author %> <a href="/books/<%= review._id %>">View Details</a></li>    
+      <% }) %>
+   </ul>
+  <% } else { %>
+      <p>No books avaliable</p>
+  <% } %>
+  </div>

@@ -5,23 +5,17 @@ const Joi = require('joi');
  * @type {Joi.ObjectSchema}
  */
 const cartSchema = Joi.object({
-  userId: Joi.string()
-    .required()
-    .example('643a6b29f3d5b8d2d8e4d531'), 
+  userId: Joi.string().required().example('643a6b29f3d5b8d2d8e4d531'),
   books: Joi.object({
     id: Joi.string().required().example('643a6b29f3d5b8d2d8e4d531'),
     quantity: Joi.number().integer().min(1).required().example(1),
   })
     .required()
     .example({
-      'id': "643a6b29f3d5b8d2d8e4d531",
-      'Quantity': 1,
+      id: '643a6b29f3d5b8d2d8e4d531',
+      Quantity: 1,
     }),
-  totalPrice: Joi.number()
-    .min(0)
-    .required()
-    .example(49.98),
+  totalPrice: Joi.number().min(0).required().example(49.98),
 });
-
 
 module.exports = { cartSchema };

@@ -53,7 +53,6 @@ async function updateBook(id, data) {
   return result.matchedCount;
 }
 
-
 async function buildBooksForm(id = null) {
   const formData = await getFormData('books', id);
   return formData;

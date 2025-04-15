@@ -23,7 +23,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "dev": "node swagger && nodemon index.js",
+    "dev": "nodemon index.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "test": "jest"
